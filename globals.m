@@ -10,7 +10,7 @@ tmpdir = '/var/tmp/virat/';
 dataset = '.';
 
 % directory with VIRAT development kit and dataset
-VIRATdevkit = [ dataset '/VIRATdevkit/'];
+VIRATdevkit = [ dataset ];
 
 % which development kit is being used
 % this does not need to be updated
