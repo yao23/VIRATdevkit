@@ -1,4 +1,4 @@
-clear VOCopts
+clear VIRATopts
 
 % use VIRAT video dataset release 1.0
 
@@ -7,9 +7,9 @@ VIRAT_R1=true; % set true to use VIRAT Release 1.0 data
 % dataset
 
 if VIRAT_R1
-    VOCopts.dataset='VIRAT_Video';
+    VIRATopts.dataset='VIRAT_Video';
 else
-    VOCopts.dataset='TSU_Experiments';
+    VIRATopts.dataset='TSU_Experiments';
 end
 
 % get current directory with forward slashes
@@ -18,78 +18,78 @@ cwd=cd;
 cwd(cwd=='\')='/';
 
 % change this path to point to your copy of the PASCAL VOC data
-VOCopts.datadir=[cwd '/'];
+VIRATopts.datadir=[cwd '/'];
 
 % change this path to a writable directory for your results
-VOCopts.resdir=[cwd '/results/' VOCopts.dataset '/'];
+VIRATopts.resdir=[cwd '/results/' VIRATopts.dataset '/'];
 
 % change this path to a writable local directory for the example code
-VOCopts.localdir=[cwd '/local/' VOCopts.dataset '/'];
+VIRATopts.localdir=[cwd '/local/' VIRATopts.dataset '/'];
 
 % initialize the test set
 
-VOCopts.testset='val'; % use validation data for development test set
+VIRATopts.testset='val'; % use validation data for development test set
 % VOCopts.testset='test'; % use test set for final challenge
 
 % initialize main challenge paths
 
-VOCopts.annopath=[VOCopts.datadir VOCopts.dataset '/Annotations/%s.txt'];
-VOCopts.imgpath=[VOCopts.datadir VOCopts.dataset '/JPEGImages/%s.jpg'];
-VOCopts.imgsetpath=[VOCopts.datadir VOCopts.dataset '/ImageSets/Main/%s.txt'];
-VOCopts.clsimgsetpath=[VOCopts.datadir VOCopts.dataset '/ImageSets/Main/%s_%s.txt'];
-VOCopts.clsrespath=[VOCopts.resdir 'Main/%s_cls_' VOCopts.testset '_%s.txt'];
-VOCopts.detrespath=[VOCopts.resdir 'Main/%s_det_' VOCopts.testset '_%s.txt'];
+VIRATopts.annopath=[VIRATopts.datadir VIRATopts.dataset '/Annotations/%s.txt'];
+VIRATopts.imgpath=[VIRATopts.datadir VIRATopts.dataset '/JPEGImages/%s.jpg'];
+VIRATopts.imgsetpath=[VIRATopts.datadir VIRATopts.dataset '/ImageSets/Main/%s.txt'];
+VIRATopts.clsimgsetpath=[VIRATopts.datadir VIRATopts.dataset '/ImageSets/Main/%s_%s.txt'];
+VIRATopts.clsrespath=[VIRATopts.resdir 'Main/%s_cls_' VIRATopts.testset '_%s.txt'];
+VIRATopts.detrespath=[VIRATopts.resdir 'Main/%s_det_' VIRATopts.testset '_%s.txt'];
 
 % ????? is it necessary to have these segmentation part
 % initialize segmentation task paths
 
-VOCopts.seg.clsimgpath=[VOCopts.datadir VOCopts.dataset '/SegmentationClass/%s.png'];
-VOCopts.seg.instimgpath=[VOCopts.datadir VOCopts.dataset '/SegmentationObject/%s.png'];
+VIRATopts.seg.clsimgpath=[VIRATopts.datadir VIRATopts.dataset '/SegmentationClass/%s.png'];
+VIRATopts.seg.instimgpath=[VIRATopts.datadir VIRATopts.dataset '/SegmentationObject/%s.png'];
 
-VOCopts.seg.imgsetpath=[VOCopts.datadir VOCopts.dataset '/ImageSets/Segmentation/%s.txt'];
+VIRATopts.seg.imgsetpath=[VIRATopts.datadir VIRATopts.dataset '/ImageSets/Segmentation/%s.txt'];
 
-VOCopts.seg.clsresdir=[VOCopts.resdir 'Segmentation/%s_%s_cls'];
-VOCopts.seg.instresdir=[VOCopts.resdir 'Segmentation/%s_%s_inst'];
-VOCopts.seg.clsrespath=[VOCopts.seg.clsresdir '/%s.png'];
-VOCopts.seg.instrespath=[VOCopts.seg.instresdir '/%s.png'];
+VIRATopts.seg.clsresdir=[VIRATopts.resdir 'Segmentation/%s_%s_cls'];
+VIRATopts.seg.instresdir=[VIRATopts.resdir 'Segmentation/%s_%s_inst'];
+VIRATopts.seg.clsrespath=[VIRATopts.seg.clsresdir '/%s.png'];
+VIRATopts.seg.instrespath=[VIRATopts.seg.instresdir '/%s.png'];
 
 % initialize layout task paths
 
-VOCopts.layout.imgsetpath=[VOCopts.datadir VOCopts.dataset '/ImageSets/Layout/%s.txt'];
-VOCopts.layout.respath=[VOCopts.resdir 'Layout/%s_layout_' VOCopts.testset '_%s.xml'];
+VIRATopts.layout.imgsetpath=[VIRATopts.datadir VIRATopts.dataset '/ImageSets/Layout/%s.txt'];
+VIRATopts.layout.respath=[VIRATopts.resdir 'Layout/%s_layout_' VIRATopts.testset '_%s.xml'];
 
 % initialize the VOC challenge options
-VOCopts.classes={...
+VIRATopts.classes={...
         'bicycle'
         'bus'
         'car'
         'motorbike'
         'person'};
 
-VOCopts.nclasses=length(VOCopts.classes);	
+VIRATopts.nclasses=length(VIRATopts.classes);	
 
-VOCopts.poses={...
+VIRATopts.poses={...
     'Unspecified'
     'SideFaceLeft'
     'SideFaceRight'
     'Frontal'
     'Rear'};
 
-VOCopts.nposes=length(VOCopts.poses);
+VIRATopts.nposes=length(VIRATopts.poses);
 
-VOCopts.parts={...
+VIRATopts.parts={...
     'head'
     'hand'
     'foot'};    
 
-VOCopts.maxparts=[1 2 2];   % max of each of above parts
+VIRATopts.maxparts=[1 2 2];   % max of each of above parts
 
-VOCopts.nparts=length(VOCopts.parts);
+VIRATopts.nparts=length(VIRATopts.parts);
 
-VOCopts.minoverlap=0.5;
+VIRATopts.minoverlap=0.5;
 
 % initialize example options
 
-VOCopts.exannocachepath=[VOCopts.localdir '%s_anno.mat'];
+VIRATopts.exannocachepath=[VIRATopts.localdir '%s_anno.mat'];
 
-VOCopts.exfdpath=[VOCopts.localdir '%s_fd.mat'];
+VIRATopts.exfdpath=[VIRATopts.localdir '%s_fd.mat'];
