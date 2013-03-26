@@ -1,16 +1,16 @@
 % Set up global variables used throughout the code
 
 % directory for caching models, intermediate data, and results
-cachedir = '~/voccache/';
+cachedir = '~/viratcache/';
 
 % directory for LARGE temporary files created during training
-tmpdir = '/var/tmp/voc/';
+tmpdir = '/var/tmp/virat/';
 
 % dataset to use
-dataset = '~/VIRAT_Video';
+dataset = '.';
 
-% directory with PASCAL VOC development kit and dataset
-VOCdevkit = [ dataset '/VOCdevkit/'];
+% directory with VIRAT development kit and dataset
+VIRATdevkit = [ dataset '/VIRATdevkit/'];
 
 % which development kit is being used
 % this does not need to be updated
@@ -18,10 +18,10 @@ VIRATdevkit = false;
 TSUdevkit = false;
 PSUdevkit = false;
 switch dataset
-  case '~/VIRAT_Video'
+  case '.'
     VIRATdevkit=true;
   case '~/TSU_Experiment'
-    VOCdevkit2007=true;
+    TSUdevkit=true;
   case '~/PSU_Video'
     PSUdevkit=true;
 end
