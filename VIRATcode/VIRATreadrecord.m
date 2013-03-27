@@ -5,7 +5,7 @@ if length(path)<4
 end
 
 if strcmp(path(end-3:end),'.txt')
-    rec=VIRATreadrectxt(path);
+    rec=VIRATreadannotation(path);
 else
     rec=VOCreadrecxml(path);
 end
