@@ -10,6 +10,11 @@ record=VIRATemptyrecord;
 rec_tmp = load(filename);
 [row col] = size(rec_tmp);
 for i = 1:row
+  if( rec_tmp(i, 8) == 1)  
+    record.objects(i).class = 'person';
+  elseif (rec_tmp(i, 8) == 2 || rec_tmp(i, 8) == 3)
+    record.objects(i).class = 'vehicle';
+  end 
   record.objects(i).label=char(rec_tmp(i,8));
   xmin = rec_tmp(i, 4);
   xmax = rec_tmp(i, 4) + rec_tmp(i, 6);
