@@ -1,14 +1,18 @@
-function pos = virat_data_trial()
+function [pos, rec_tmp] = virat_data_trial()
   % % % positive process part
   % img_files = '~/Projects/object_detection/dataset/VIRAT_video_cut';
   img_files = '~/Desktop/VIRAT_video_cut2';
   anno_files = dir('~/Projects/object_detection/tools/VIRATdevkit/VIRAT_Video/Annotations/*.txt');
   % anno_files = dir([VIRATopts.annopath '/*.txt']);
   num_anno_files = length(anno_files);
-  numpos = 1;
+  numpos = 0;
   % read annotation file by file
-  for i = 1 : num_anno_files
+  for i = 1 : 1%num_anno_files
     rec_tmp = load(anno_files(i).name);
+%     fileID = fopen(anno_files(i).name);
+%     formatSpec = '%s';
+%     N = 8;
+%     rec_tmp = textscan(fileID, formatSpec, N);
     [row col] = size(rec_tmp);
     % read line by line, row is the length of each anno_file
     for j = 1 : row
