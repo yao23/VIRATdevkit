@@ -15,7 +15,7 @@ function pos = virat_data_trial()
       % extract part before ‘.viratdata.objects.txt’, namely the video name,
       % e.g. filename == VIRAT_S_000001.viratdata.objects.txt
       folder_name = ['/' anno_files(i).name(1 : end-22) '/'];
-      file_name = num2str(rec_tmp(i, 3), '%6d'); 
+      file_name = num2str(rec_tmp(i, 3), '%.6d'); 
       pos(numpos).im = [img_files folder_name file_name '.jpg'];
       pos(numpos).x1 = rec_tmp(i, 4);
       pos(numpos).y1 = rec_tmp(i, 5);
