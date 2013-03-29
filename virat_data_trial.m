@@ -1,6 +1,7 @@
 function pos = virat_data_trial()
   % % % positive process part
-  img_files = '~/Projects/object_detection/dataset/VIRAT_video_cut';
+  % img_files = '~/Projects/object_detection/dataset/VIRAT_video_cut';
+  img_files = '~/Desktop/VIRAT_video_cut2';
   anno_files = dir('~/Projects/object_detection/tools/VIRATdevkit/VIRAT_Video/Annotations/*.txt');
   % anno_files = dir([VIRATopts.annopath '/*.txt']);
   num_anno_files = length(anno_files);
