@@ -1,4 +1,4 @@
-function [pos, rec_tmp] = virat_data_trial(cls)
+function [pos, neg, rec_tmp] = virat_data_trial(cls)
   % % % positive process part
   % img_files = '~/Projects/object_detection/dataset/VIRAT_video_cut';
   img_files = '~/Desktop/VIRAT_video_cut2';
@@ -8,6 +8,9 @@ function [pos, rec_tmp] = virat_data_trial(cls)
     
   num_anno_files = length(anno_files);
   numpos = 0;
+  numneg = 0;
+  pos = [];
+  neg = [];
   % read annotation file by file
   for i = 1 : num_anno_files
     rec_tmp = load(anno_files(i).name);
@@ -18,18 +21,26 @@ function [pos, rec_tmp] = virat_data_trial(cls)
           case 'person'
               if( rec_tmp(j, 8) == 1 )
                   [numpos, pos] = pos_process(numpos, rec_tmp, i, j, img_files, anno_files);
+              else 
+                  [numneg, neg] = neg_process(numneg, rec_tmp, i, j, img_files, anno_files);
               end
           case 'vehicle'
               if( rec_tmp(j, 8) == 2 || rec_tmp(j, 8) == 3)
                   [numpos, pos] = pos_process(numpos, rec_tmp);
+              else 
+                  [numneg, neg] = neg_process(numneg, rec_tmp, i, j, img_files, anno_files);
               end
           case 'car'
               if( rec_tmp(j, 8) == 2 )
                   [numpos, pos] = pos_process(numpos, rec_tmp);
+              else 
+                  [numneg, neg] = neg_process(numneg, rec_tmp, i, j, img_files, anno_files);
               end 
           case 'other vehicle'
               if( rec_tmp(j, 8) == 3 )
                   [numpos, pos] = pos_process(numpos, rec_tmp);
+              else 
+                  [numneg, neg] = neg_process(numneg, rec_tmp, i, j, img_files, anno_files);
               end
           otherwise
               disp('other object type');
@@ -40,7 +51,7 @@ function [pos, rec_tmp] = virat_data_trial(cls)
 end
   
 function [numpos, pos] = pos_process(numpos, rec_tmp, i, j, img_files, anno_files)
-      numpos = numpos+1;
+      numpos = numpos + 1;
       % extract part before ‘.viratdata.objects.txt’, namely the video name,
       % e.g. filename == VIRAT_S_000001.viratdata.objects.txt
       folder_name = ['/' anno_files(i).name(1 : end-22) '/'];
@@ -52,3 +63,11 @@ function [numpos, pos] = pos_process(numpos, rec_tmp, i, j, img_files, anno_file
       pos(numpos).y2 = rec_tmp(j, 5) + rec_tmp(j, 7);
           
 end
+
+function [numneg, neg] = neg_process(numneg, rec_tmp, i, j, img_files, anno_files) 
+  numneg = numneg + 1;
+  folder_name = ['/' anno_files(i).name(1 : end-22) '/'];
+  file_name = num2str(rec_tmp(j, 3), '%.6d'); 
+  neg(numneg).im = [img_files folder_name file_name '.jpg'];
+end
+  

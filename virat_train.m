@@ -12,7 +12,7 @@ try
   load([cachedir cls '_random']);
 catch
   for i=1:n
-    models{i}split = initmodel(spos{i});
+    models{i} = initmodel(spos{i});
     models{i} = train(cls, models{i}, spos{i}, neg, 1, 1, 1, 1, 2^28);
   end
   save([cachedir cls '_random'], 'models');
