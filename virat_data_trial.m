@@ -1,4 +1,10 @@
-function [pos, neg, rec_tmp] = virat_data_trial(cls)
+function [pos, neg] = virat_data_trial(cls)
+  % [pos, neg] = virat_data(cls)
+  % Get training data from the VIRAT dataset.
+
+  globals; 
+  virat_init;
+
   % % % positive process part
   % img_files = '~/Projects/object_detection/dataset/VIRAT_video_cut';
   img_files = '~/Desktop/VIRAT_video_cut2';
@@ -47,7 +53,7 @@ function [pos, neg, rec_tmp] = virat_data_trial(cls)
       end  
     end
   end
-
+  save([cachedir cls '_train'], 'pos', 'neg');
 end
   
 function [numpos, pos] = pos_process(numpos, rec_tmp, i, j, img_files, anno_files)
