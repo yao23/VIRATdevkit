@@ -6,19 +6,19 @@ function model = virat_train(cls, n)
 globals; 
 virat_init;
 % [pos, neg] = virat_data_trial(cls);
-load('pos.mat');
-load('neg.mat');
-%%% spos = split(pos, n);
+load('pos_person_tmp.mat');
+load('neg_person_tmp.mat');
+spos = split(pos, n);
 
 % train root filters using warped positives & random negatives
 try
   load([cachedir cls '_random']);
 catch
   for i=1:n
-%%%     models{i} = initmodel(spos{i});
-%%%     models{i} = train(cls, models{i}, spos{i}, neg, 1, 1, 1, 1, 2^28);
-    models{i} = initmodel(pos(i));
-    models{i} = train(cls, models{i}, pos(i), neg, 1, 1, 1, 1, 2^28);
+     models{i} = initmodel(spos{i});
+     models{i} = train(cls, models{i}, spos{i}, neg, 1, 1, 1, 1, 2^28);
+%     models{i} = initmodel(pos(i));
+%     models{i} = train(cls, models{i}, pos(i), neg, 1, 1, 1, 1, 2^28);
   end
   save([cachedir cls '_random'], 'models');
 end
