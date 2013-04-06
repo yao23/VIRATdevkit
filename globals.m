@@ -1,10 +1,13 @@
 % Set up global variables used throughout the code
 
 % directory for caching models, intermediate data, and results
+
 cachedir = '~/Projects/object_detection/tools/VIRATdevkit/viratcache/';
+cachedir = './viratcache/';
 
 % directory for LARGE temporary files created during training
-tmpdir = '/var/tmp/virat/';
+tmpdir = '~/Projects/object_detection/tools/VIRATdevkit/var/tmp/virat/';
+tmpdir = './var/tmp/virat/';
 
 % dataset to use
 dataset = '.';
