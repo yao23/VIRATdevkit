@@ -6,8 +6,8 @@ function model = virat_train(cls, n)
 globals; 
 virat_init;
 % [pos, neg] = virat_data_trial(cls);
-load('pos_person_tmp.mat');
-load('neg_person_tmp.mat');
+load([cachedir cls '_train.mat']);
+
 spos = split(pos, n);
 
 % train root filters using warped positives & random negatives
