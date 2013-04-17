@@ -1,15 +1,19 @@
-addpath('detector');
+% addpath('detector');
 
-video_path = '/home/yao/Desktop/aladdin_repo/MindsEye/shot1/Camera_1-Shot_1-Mar_28_5_10_24_PM-Small';
+video_path = '/home/yao/Desktop/VIRAT_video_cut3/VIRAT_S_000001';
 
 detection_num = '300';
-default_path = '/home/yao/Desktop/aladdin_repo/models/default';
-default_list = '/home/yao/Desktop/aladdin_repo/models/threshold_default.txt';
-event_path = '/home/yao/Desktop/aladdin_repo/models/models_vehicles';
-event_list = '/home/yao/Desktop/aladdin_repo/models/threshold_vehicles.txt';
+default_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/models/default';
+default_list = '/home/yao/Projects/object_detection/tools/VIRATdevkit/models/threshold_default.txt';
+event_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/models/models_vehicles';
+event_list = '/home/yao/Projects/object_detection/tools/VIRATdevkit/models/threshold_vehicles.txt';
 
-outcsv_path = '/home/yao/Desktop/aladdin_repo/MindsEye/output/shot1/Camera_1-Shot_1-Mar_28_5_10_24_PM-Small/csv';
+outcsv_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection/VIRAT_S_000001/csv';
 draw = true;
+
+if ~exist(outcsv_path, 'dir')
+    mkdir(outcsv_path);
+end
 
 %% detection
 virat_processing(video_path, detection_num, default_path, default_list, ...
@@ -23,14 +27,21 @@ virat_processing(video_path, detection_num, default_path, default_list, ...
 
 %% visualize
 addpath('visualize/code');
-% outimage_path = '/home/yao/Desktop/aladdin_repo/test_1/track_image';
+% outimage_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection/VIRAT_S_000001/track_image';
+% if ~exist(outimage_path, 'dir')
+%    mkdir(outimage_path);
+% end
 % video_tracks(video_path, outimage_path, [outcsv_path,'/track'], [outcsv_path,'/idmap.txt']);
 
-outimage_path = '/home/yao/Desktop/aladdin_repo/MindsEye/output/shot1/Camera_1-Shot_1-Mar_28_5_10_24_PM-Small/det_img';
+outimage_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection/VIRAT_S_000001/det_img';
 bbox_path = [outcsv_path, '/detection.csv'];
 idmap_path = [outcsv_path, '/idmap.txt'];
-% bbox_path = '/home/yao/Desktop/aladdin_repo/MindsEye/output/shot1/Camera_1-Shot_1-Mar_28_5_10_24_PM-Small/csv/detection.csv';
-% idmap_path = '/home/yao/Desktop/aladdin_repo/MindsEye/output/shot1/Camera_1-Shot_1-Mar_28_5_10_24_PM-Small/csv/idmap.txt';
+% bbox_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection/VIRAT_S_000001/csv/detection.csv';
+% idmap_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection/VIRAT_S_000001/csv/idmap.txt';
+
+if ~exist(outimage_path, 'dir')
+    mkdir(outimage_path);
+end
 
 % video_detection(video_path, outimage_path, bbox_path, idmap_path);
 
