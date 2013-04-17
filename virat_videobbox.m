@@ -1,5 +1,5 @@
-function aladdin_videobbox(im, index, outimage_path, bbox_frame, models)
-% aladdin_videobbox(im, bbox_frame, models)
+function virat_videobbox(im, index, outimage_path, bbox_frame, models)
+% virat_videobbox(im, bbox_frame, models)
 % im: image
 % outimage_path: path to your image output
 % bbox_frame: a row of bounding box
