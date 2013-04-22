@@ -1,4 +1,4 @@
-function model = virat_train(cls, n)
+function model = virat_train_trial(cls, n)
 
 % model = virat_train(cls)
 % Train a model using the VIRAT dataset.
