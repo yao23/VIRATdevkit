@@ -33,7 +33,8 @@ if event_path(end) == '/'
 end
 % default models
 default_fid = fopen(default_list, 'r');
-default_file = textscan(default_fid, '%s %d\n');
+% default_file = textscan(default_fid, '%s %d\n');
+default_file = textscan(default_fid, '%s %f\n');
 default_names = default_file{1,1};
 default_threshs = default_file{1,2};
 default_num = length(default_names);
@@ -48,7 +49,8 @@ for i=1:default_num
 end
 % event models
 event_fid = fopen(event_list, 'r');
-event_file = textscan(event_fid, '%s %d\n');
+% event_file = textscan(event_fid, '%s %d\n');
+event_file = textscan(event_fid, '%s %f\n');
 event_names = event_file{1,1};
 event_threshs = event_file{1,2};
 event_num = length(event_names);
