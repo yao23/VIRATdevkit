@@ -64,7 +64,17 @@ end
 % write down id map
 idmap_fid = fopen([outcsv_path, '/idmap.txt'], 'w');
 for i=1:models_num
-    fprintf(idmap_fid, '%d %s %f\n', i, models{i}.model.class, models{i}.thresh);
+    switch i
+      case 1
+        model_class = 'person';
+      case 2
+        model_class = 'bus';
+      case 3
+        model_class = 'car';
+      otherwise
+        model_class = 'vehicle';
+    end
+    fprintf(idmap_fid, '%d %s %f\n', i, model_class, models{i}.thresh);
 end
 fclose(idmap_fid);
 
@@ -81,7 +91,11 @@ if detection_num > frame_num
 end
 
 % detection_num = floor((frame_num - 1)/step) + 1;
-step = floor((frame_num-1)/(detection_num-1));
+if frame_num == 1
+    step = 0;
+else 
+    step = floor((frame_num-1)/(detection_num-1));
+end
 % matlabpool;
 for i=1:detection_num
     frame_id = (i-1)*step + 1;
