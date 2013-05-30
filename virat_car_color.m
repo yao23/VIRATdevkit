@@ -30,21 +30,19 @@ car_pos = object_position(frame_test, 'car');
 im = sprintf('%s/%06d.jpg', [video_path dir_list_test_name], frame_id);
 img = imread(im);
 
-% x1 = int64(car_pos(1,1));
-% y1 = int64(car_pos(1,2));
-% x2 = int64(car_pos(1,3));
-% y2 = int64(car_pos(1,4));
-% cars_crop = img(x1:x2, y1:y2, :);
-% rgbhist(cars_crop);
+obj_num = length(car_pos);
 
-for i = 1:length(car_pos)
+for i = 1:obj_num
     x1 = int64(car_pos(i,1));
     y1 = int64(car_pos(i,2));
     x2 = int64(car_pos(i,3));
     y2 = int64(car_pos(i,4));
     cars_crop = img(y1:y2, x1:x2, :);
-    rgbhist(cars_crop);
+    hist_info = zeros(obj_num, 256*3);
+    hist_info(i, :) = rgbhist_info(cars_crop);
 end
+
+% IDX = kmeans(X,k)
 
 end
 
@@ -104,3 +102,22 @@ set(h(3), 'color', [0 0 1])
 axis square 
 end
 
+function hist_info = rgbhist_info(img)
+if (size(img, 3) ~= 3)
+    error('rgbhist:numberOfSamples', 'Input image must be RGB.')
+end
+
+nBins = 256;
+
+rHist = imhist(img(:,:,1), nBins);
+gHist = imhist(img(:,:,2), nBins);
+bHist = imhist(img(:,:,3), nBins);
+
+% hist_info = [rHist gHist bHist];
+hist_info = cat(2, rHist', gHist', bHist');
+
+end
+
+function detect_color
+
+end
