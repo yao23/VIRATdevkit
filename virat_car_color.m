@@ -40,7 +40,6 @@ for i = 1:obj_num
     y2 = int64(car_pos(i,4));
     cars_crop = img(y1:y2, x1:x2, :);  
     hist_info(i, :) = rgbhist(cars_crop);
-%     hist_info(i, :) = rgbhist_info(cars_crop);
 end
 
 IDX = kmeans(hist_info, 5);
@@ -71,12 +70,9 @@ obj_pos = obj_color_matrix(:,2:5);
 end
 
 function hist_info = rgbhist(I)
-%RGBHIST Histogram of RGB values.
-
-% I = imread(I);
 
 if (size(I, 3) ~= 3)
-error('rgbhist:numberOfSamples', 'Input image must be RGB.')
+  error('rgbhist:numberOfSamples', 'Input image must be RGB.')
 end
 
 nBins = 256;
@@ -102,19 +98,4 @@ set(h(2), 'color', [0 1 0])
 set(h(3), 'color', [0 0 1])
 axis square 
 end
-% 
-% function hist_info = rgbhist_info(img)
-% if (size(img, 3) ~= 3)
-%     error('rgbhist:numberOfSamples', 'Input image must be RGB.')
-% end
-% 
-% nBins = 256;
-% 
-% rHist = imhist(img(:,:,1), nBins);
-% gHist = imhist(img(:,:,2), nBins);
-% bHist = imhist(img(:,:,3), nBins);
-% 
-% % hist_info = [rHist gHist bHist];
-% hist_info = cat(2, rHist', gHist', bHist');
-% 
-% end
+
