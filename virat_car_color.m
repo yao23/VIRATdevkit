@@ -1,4 +1,4 @@
-function IDX = virat_car_color
+function [color_class, color_dis] = virat_car_color
 video_path = '/home/yao/Desktop/VIRAT_video_cut3/';
 
 VIRAT_ccr_output_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_test/VIRAT/';
@@ -42,7 +42,18 @@ for i = 1:obj_num
     hist_info(i, :) = rgbhist(cars_crop);
 end
 
-IDX = kmeans(hist_info, 5);
+k = 5;
+color_class = kmeans(hist_info, k);
+obj_num_tmp = 1:obj_num;
+color_class_tmp = cat(2, obj_num_tmp', color_class);
+
+color_dis = zeros(k, obj_num);
+
+for i = 1:k
+    color_dis_label = color_class(:,1)==i;
+    color_car_num = sum(color_dis_label);
+    color_dis(i, 1:color_car_num) = color_class_tmp(color_dis_label,1)';
+end
 
 end
 
@@ -80,6 +91,11 @@ nBins = 256;
 rHist = imhist(I(:,:,1), nBins);
 gHist = imhist(I(:,:,2), nBins);
 bHist = imhist(I(:,:,3), nBins);
+
+[r, r_i] = max(rHist);
+[g, g_i] = max(gHist);
+[b, b_i] = max(bHist);
+color = [r_i g_i b_i];
 
 hist_info = cat(2, rHist', gHist', bHist');
 
