@@ -1,4 +1,4 @@
-function [color_class, color_dis] = virat_car_color
+function [color_class, color_dis, color_info] = virat_car_color
 video_path = '/home/yao/Desktop/VIRAT_video_cut3/';
 
 VIRAT_ccr_output_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_test/VIRAT/';
@@ -20,11 +20,16 @@ dir_num = length(dir_list);
 % end
 
 VIRAT_output_test_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/VIRAT/';
-dir_list_test_name = 'VIRAT_S_050203_09_001960_002083';
+% dir_list_test_name = 'VIRAT_S_050203_09_001960_002083';
+dir_list_test_name = 'VIRAT_S_050202_08_001410_001494';
 bbox_info = csvread([VIRAT_output_test_dir dir_list_test_name '/csv/detection.csv']);
-frame_id = bbox_info(1,1);
+% frame_id = bbox_info(1,1);
+line_id = 71; % fid = 2451;
+frame_id = bbox_info(line_id, 1);
+
 bbox_frame = bbox_info(:, 2:end);
-frame_test = bbox_frame(1, :);
+% frame_test = bbox_frame(1, :);
+frame_test = bbox_frame(line_id, :);
 car_pos = object_position(frame_test, 'car');
 
 im = sprintf('%s/%06d.jpg', [video_path dir_list_test_name], frame_id);
@@ -32,6 +37,7 @@ img = imread(im);
 
 obj_num = length(car_pos);
 hist_info = zeros(obj_num, 256*3);
+color_info = zeros(obj_num, 3);
 
 for i = 1:obj_num
     x1 = int64(car_pos(i,1));
@@ -39,7 +45,7 @@ for i = 1:obj_num
     x2 = int64(car_pos(i,3));
     y2 = int64(car_pos(i,4));
     cars_crop = img(y1:y2, x1:x2, :);  
-    hist_info(i, :) = rgbhist(cars_crop);
+    [hist_info(i, :), color_info(i, :)] = rgbhist(cars_crop);
 end
 
 k = 5;
@@ -80,7 +86,7 @@ obj_pos = obj_color_matrix(:,2:5);
 
 end
 
-function hist_info = rgbhist(I)
+function [hist_info, color] = rgbhist(I)
 
 if (size(I, 3) ~= 3)
   error('rgbhist:numberOfSamples', 'Input image must be RGB.')
