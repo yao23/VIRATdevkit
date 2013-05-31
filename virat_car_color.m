@@ -24,7 +24,8 @@ VIRAT_output_test_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/o
 dir_list_test_name = 'VIRAT_S_050202_08_001410_001494';
 bbox_info = csvread([VIRAT_output_test_dir dir_list_test_name '/csv/detection.csv']);
 % frame_id = bbox_info(1,1);
-line_id = 71; % fid = 2451;
+% line_id = 71; % fid = 2451;
+line_id = 13; % fid = 421;
 frame_id = bbox_info(line_id, 1);
 
 bbox_frame = bbox_info(:, 2:end);
@@ -98,15 +99,26 @@ rHist = imhist(I(:,:,1), nBins);
 gHist = imhist(I(:,:,2), nBins);
 bHist = imhist(I(:,:,3), nBins);
 
-[r, r_i] = max(rHist);
-[g, g_i] = max(gHist);
-[b, b_i] = max(bHist);
-color = [r_i g_i b_i];
+[r_vote, r] = max(rHist);
+[g_vote, g] = max(gHist);
+[b_vote, b] = max(bHist);
+color = [r g b];
+
+if (g >= 200) && (b >= 200)
+   color_type = 'white vehicle';
+elseif r >= 117
+   color_type = 'red vehicle';
+else
+   color_type = 'black/deep vehicle';
+end
 
 hist_info = cat(2, rHist', gHist', bHist');
 
 figure
 subplot(1,2,1);imshow(I)
+% text(.5,.25, color_type);
+title(color_type);
+
 subplot(1,2,2);
 
 h(1) = stem(1:256, rHist); hold on
@@ -118,6 +130,7 @@ set(h, 'marker', 'none')
 set(h(1), 'color', [1 0 0])
 set(h(2), 'color', [0 1 0])
 set(h(3), 'color', [0 0 1])
+
 axis square 
 end
 
