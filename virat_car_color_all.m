@@ -1,4 +1,4 @@
-function [color_class, color_dis, color_info] = virat_car_color_all
+function color_types = virat_car_color_all
 video_path = '/home/yao/Desktop/VIRAT_video_cut3/';
 %%% VIRAT_output_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/VIRAT/';
 VIRAT_output_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_test_all/VIRAT/';
@@ -18,13 +18,13 @@ for i = 3:dir_num
       frame_id = bbox_info(j,1);
       %%% bbox_frame = bbox_info(j, 2:end);
       im = sprintf('%s/%06d.jpg', [video_path dir_list(i).name], frame_id);
-      [color_class, color_dis, color_info, color_types(j,:)] = virat_car_color(im, bbox_info, j);
+      color_types(j,:) = virat_car_color(im, bbox_info, j);
       %%% virat_videobbox(im, frame_id, [output_det_img_path dir_list(i).name], bbox_frame, models);
    end
 end
 end
 
-function [color_class, color_dis, color_info, color_types] = virat_car_color(im, bbox_info, line_id)
+function color_types = virat_car_color(im, bbox_info, line_id)
 
 bbox_frame = bbox_info(:, 2:end);
 frame_test = bbox_frame(line_id, :);
