@@ -4,6 +4,8 @@ video_path = '/home/yao/Desktop/VIRAT_video_cut3/';
 VIRAT_output_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_test_all/VIRAT/';
 dir_list = dir(VIRAT_output_dir);
 dir_num = length(dir_list);
+obj_num = 50;
+color_types = zeros(dir_num-2, obj_num);
 
 % process bbox information folder by folder 
 % 1 for current directory, 2 for parent directory
@@ -16,13 +18,13 @@ for i = 3:dir_num
       frame_id = bbox_info(j,1);
       %%% bbox_frame = bbox_info(j, 2:end);
       im = sprintf('%s/%06d.jpg', [video_path dir_list(i).name], frame_id);
-      [color_class, color_dis, color_info] = virat_car_color(im, bbox_info, j);
+      [color_class, color_dis, color_info, color_types(j,:)] = virat_car_color(im, bbox_info, j);
       %%% virat_videobbox(im, frame_id, [output_det_img_path dir_list(i).name], bbox_frame, models);
    end
 end
 end
 
-function [color_class, color_dis, color_info] = virat_car_color(im, bbox_info, line_id)
+function [color_class, color_dis, color_info, color_types] = virat_car_color(im, bbox_info, line_id)
 
 bbox_frame = bbox_info(:, 2:end);
 frame_test = bbox_frame(line_id, :);
@@ -33,6 +35,7 @@ img = imread(im);
 obj_num = length(car_pos);
 hist_info = zeros(obj_num, 256*3);
 color_info = zeros(obj_num, 3);
+color_types = zeros(1, obj_num);
 
 for i = 1:obj_num
     x1 = int64(car_pos(i,1));
@@ -40,7 +43,7 @@ for i = 1:obj_num
     x2 = int64(car_pos(i,3));
     y2 = int64(car_pos(i,4));
     cars_crop = img(y1:y2, x1:x2, :);  
-    [hist_info(i, :), color_info(i, :)] = rgbhist(cars_crop);
+    [hist_info(i, :), color_info(i, :), color_types(1, i)] = rgbhist(cars_crop);
 end
 
 k = 5;
@@ -81,7 +84,7 @@ obj_pos = obj_color_matrix(:,2:5);
 
 end
 
-function [hist_info, color] = rgbhist(I)
+function [hist_info, color, color_type] = rgbhist(I)
 
 if (size(I, 3) ~= 3)
   error('rgbhist:numberOfSamples', 'Input image must be RGB.')
@@ -108,23 +111,23 @@ end
 
 hist_info = cat(2, rHist', gHist', bHist');
 
-figure
-subplot(1,2,1);imshow(I)
-title(color_type);
-
-subplot(1,2,2);
-
-h(1) = stem(1:256, rHist); hold on
-h(2) = stem(1:256 + 1/3, gHist);
-h(3) = stem(1:256 + 2/3, bHist);
-hold off
-
-set(h, 'marker', 'none')
-set(h(1), 'color', [1 0 0])
-set(h(2), 'color', [0 1 0])
-set(h(3), 'color', [0 0 1])
-
-axis square 
+% figure
+% subplot(1,2,1);imshow(I)
+% title(color_type);
+% 
+% subplot(1,2,2);
+% 
+% h(1) = stem(1:256, rHist); hold on
+% h(2) = stem(1:256 + 1/3, gHist);
+% h(3) = stem(1:256 + 2/3, bHist);
+% hold off
+% 
+% set(h, 'marker', 'none')
+% set(h(1), 'color', [1 0 0])
+% set(h(2), 'color', [0 1 0])
+% set(h(3), 'color', [0 0 1])
+% 
+% axis square 
 end
 
 
