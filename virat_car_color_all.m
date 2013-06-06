@@ -1,41 +1,51 @@
-function color_types = virat_car_color_all
+%%% function color_types = virat_car_color_all
+function virat_car_color_all
 video_path = '/home/yao/Desktop/VIRAT_video_cut3/';
 %%% VIRAT_output_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/VIRAT/';
 VIRAT_output_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_test_all/VIRAT/';
 dir_list = dir(VIRAT_output_dir);
 dir_num = length(dir_list);
-obj_num = 50;
-color_types = zeros(dir_num-2, obj_num);
+%%% obj_num = 50;
+%%% color_types = cell(dir_num-2, obj_num);
 
 % process bbox information folder by folder 
 % 1 for current directory, 2 for parent directory
 for i = 3:dir_num
+   % vehicle color information
+   color_path = [VIRAT_output_dir dir_list(i).name '/csv/vehicle_color.csv'];
+   if exist(color_path, 'file')
+       delete(color_path);
+   end
    % read bounding box information 
    bbox_info = csvread([VIRAT_output_dir dir_list(i).name '/csv/detection.csv']);
-   img_num = length(bbox_info);
+   %%% img_num = length(bbox_info);
+   img_num = size(bbox_info, 1);
    % process bbox information line by line 
    for j=1:img_num
       frame_id = bbox_info(j,1);
       %%% bbox_frame = bbox_info(j, 2:end);
       im = sprintf('%s/%06d.jpg', [video_path dir_list(i).name], frame_id);
-      color_types(j,:) = virat_car_color(im, bbox_info, j);
+      %%% color_types(j,:) = virat_car_color(im, bbox_info, j, color_path);
+      virat_car_color(im, bbox_info, j, color_path);
       %%% virat_videobbox(im, frame_id, [output_det_img_path dir_list(i).name], bbox_frame, models);
    end
 end
 end
 
-function color_types = virat_car_color(im, bbox_info, line_id)
+%%% function color_types = virat_car_color(im, bbox_info, line_id, color_path)
+function virat_car_color(im, bbox_info, line_id, color_path)
 
 bbox_frame = bbox_info(:, 2:end);
 frame_test = bbox_frame(line_id, :);
 car_pos = object_position(frame_test, 'car');
+frame_id = bbox_frame(line_id, 1);
 
 img = imread(im);
 
 obj_num = length(car_pos);
 hist_info = zeros(obj_num, 256*3);
 color_info = zeros(obj_num, 3);
-color_types = zeros(1, obj_num);
+color_types = cell(1, obj_num);
 
 for i = 1:obj_num
     x1 = int64(car_pos(i,1));
@@ -43,21 +53,27 @@ for i = 1:obj_num
     x2 = int64(car_pos(i,3));
     y2 = int64(car_pos(i,4));
     cars_crop = img(y1:y2, x1:x2, :);  
-    [hist_info(i, :), color_info(i, :), color_types(1, i)] = rgbhist(cars_crop);
+    [hist_info(i, :), color_info(i, :), color_types{1, i}] = rgbhist(cars_crop);
 end
 
-k = 5;
-color_class = kmeans(hist_info, k);
-obj_num_tmp = 1:obj_num;
-color_class_tmp = cat(2, obj_num_tmp', color_class);
+%%% dlmwrite(color_path, [frame_id, color_types], '-append', 'delimiter', ',');
+fid = fopen(color_path, 'a');
+%%% fprintf(fid, '%s\t', color_types{1}{:});
+fprintf(fid, '%s\t', color_types{1, :});
+fclose(fid);
 
-color_dis = zeros(k, obj_num);
+% k = 5;
+% color_class = kmeans(hist_info, k);
+% obj_num_tmp = 1:obj_num;
+% color_class_tmp = cat(2, obj_num_tmp', color_class);
 
-for i = 1:k
-    color_dis_label = color_class(:,1)==i;
-    color_car_num = sum(color_dis_label);
-    color_dis(i, 1:color_car_num) = color_class_tmp(color_dis_label,1)';
-end
+% color_dis = zeros(k, obj_num);
+
+% for i = 1:k
+%    color_dis_label = color_class(:,1)==i;
+%    color_car_num = sum(color_dis_label);
+%    color_dis(i, 1:color_car_num) = color_class_tmp(color_dis_label,1)';
+% end
 
 end
 
