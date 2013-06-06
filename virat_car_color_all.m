@@ -38,7 +38,7 @@ function virat_car_color(im, bbox_info, line_id, color_path)
 bbox_frame = bbox_info(:, 2:end);
 frame_test = bbox_frame(line_id, :);
 car_pos = object_position(frame_test, 'car');
-frame_id = bbox_frame(line_id, 1);
+frame_id = bbox_info(line_id, 1);
 
 img = imread(im);
 
@@ -58,8 +58,14 @@ end
 
 %%% dlmwrite(color_path, [frame_id, color_types], '-append', 'delimiter', ',');
 fid = fopen(color_path, 'a');
+fprintf(fid, '%s,', frame_id);
 %%% fprintf(fid, '%s\t', color_types{1}{:});
-fprintf(fid, '%s\t', color_types{1, :});
+rows = size(color_types, 1);
+for i = 1:rows
+    fprintf(fid,'%s,', color_types{i, 1:end-1});
+    fprintf(fid,'%s\n',color_types{i, end});
+end
+%%% fprintf(fid, '%s\t', [frame_id, ',' color_types{1, :} '\n']);
 fclose(fid);
 
 % k = 5;
