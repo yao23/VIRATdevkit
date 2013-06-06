@@ -58,7 +58,7 @@ end
 
 %%% dlmwrite(color_path, [frame_id, color_types], '-append', 'delimiter', ',');
 fid = fopen(color_path, 'a');
-fprintf(fid, '%s,', frame_id);
+fprintf(fid, '%d,', frame_id);
 %%% fprintf(fid, '%s\t', color_types{1}{:});
 rows = size(color_types, 1);
 for i = 1:rows
