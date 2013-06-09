@@ -58,14 +58,16 @@ end
 
 %%% dlmwrite(color_path, [frame_id, color_types], '-append', 'delimiter', ',');
 fid = fopen(color_path, 'a');
+fprintf(fid, '%s', '<data ref="SENSOR_NAME">');
 fprintf(fid, '%d,', frame_id);
 %%% fprintf(fid, '%s\t', color_types{1}{:});
 rows = size(color_types, 1);
 for i = 1:rows
     fprintf(fid,'%s,', color_types{i, 1:end-1});
-    fprintf(fid,'%s\n',color_types{i, end});
+    fprintf(fid,'%s',color_types{i, end});
 end
 %%% fprintf(fid, '%s\t', [frame_id, ',' color_types{1, :} '\n']);
+fprintf(fid, '%s\n', '</data>');
 fclose(fid);
 
 % k = 5;
