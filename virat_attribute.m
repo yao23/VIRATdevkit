@@ -76,8 +76,8 @@ for i = 1:obj_num
         height_types{1, i} = 'short';
 
     end
-    %fprintf(fid, ',');
-    fprintf(fid,',%d,%.2f,%.2f,%.2f,%.2f,%s', person_class_ID, person_pos(i,1), person_pos(i,2), person_pos(i,3), person_pos(i,4), height_types{1, 1:end-1});
+    fprintf(fid, ',');
+    fprintf(fid,'%d,%.2f,%.2f,%.2f,%.2f,%s', person_class_ID, person_pos(i,1), person_pos(i,2), person_pos(i,3), person_pos(i,4), height_types{1, 1:end-1});
 end
 
 end
@@ -102,9 +102,16 @@ for i = 1:obj_num
     y2 = int64(veh_pos(i,4));
     vehs_crop = img(y1:y2, x1:x2, :);
     color_types{1, i} = rgbhist(vehs_crop);
+    fprintf(fid, ',');
+    fprintf(fid,'%d,%.2f,%.2f,%.2f,%.2f,%s', veh_class_ID, veh_pos(i,1), veh_pos(i,2), veh_pos(i,3), veh_pos(i,4), color_types{1, i});
+%     if i ~= obj_num
+%         fprintf(fid,'%d,%.2f,%.2f,%.2f,%.2f,%s,', veh_class_ID, veh_pos(i,1), veh_pos(i,2), veh_pos(i,3), veh_pos(i,4), color_types{1, i});
+%     else
+%         fprintf(fid,'%d,%.2f,%.2f,%.2f,%.2f,%s', veh_class_ID, veh_pos(i,1), veh_pos(i,2), veh_pos(i,3), veh_pos(i,4), color_types{1, i});
+%     end
 end
  
-fprintf(fid,',%d,%.2f,%.2f,%.2f,%.2f,%s', veh_class_ID, veh_pos(1:end,1), veh_pos(1:end,2), veh_pos(1:end,3), veh_pos(1:end,4), color_types{1, 1:end});
+%%% fprintf(fid,',%d,%.2f,%.2f,%.2f,%.2f,%s', veh_class_ID, veh_pos(1:end,1), veh_pos(1:end,2), veh_pos(1:end,3), veh_pos(1:end,4), color_types{1, 1:end});
 
 end
 
