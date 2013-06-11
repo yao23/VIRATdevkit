@@ -19,9 +19,13 @@ for i = 3:dir_num
    img_num = size(bbox_info, 1);
    % process bbox information line by line 
    for j=1:img_num
-      frame_id = bbox_info(j,1);
-      im = sprintf('%s/%06d.jpg', [video_path dir_list(i).name], frame_id);
-      virat_height_color(im, bbox_info, j, attribute_path);
+      %if bbox_info(j,2) == 0
+       %   continue
+      %else
+          frame_id = bbox_info(j,1);
+          im = sprintf('%s/%06d.jpg', [video_path dir_list(i).name], frame_id);
+          virat_height_color(im, bbox_info, j, attribute_path);
+      %end
    end
 end
 end
@@ -47,7 +51,7 @@ if ~isempty(bus_pos)
     vehicle_color(bus_pos, fid, im, 'bus');
 end
 
-if ~isempty(person_pos)
+if ~isempty(car_pos)
     vehicle_color(car_pos, fid, im, 'car');
 end
 
