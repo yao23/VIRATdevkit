@@ -19,13 +19,13 @@ for i = 3:dir_num
    img_num = size(bbox_info, 1);
    % process bbox information line by line 
    for j=1:img_num
-      %if bbox_info(j,2) == 0
-       %   continue
-      %else
+      if bbox_info(j,2) == 0
+         continue
+      else
           frame_id = bbox_info(j,1);
           im = sprintf('%s/%06d.jpg', [video_path dir_list(i).name], frame_id);
           virat_height_color(im, bbox_info, j, attribute_path);
-      %end
+      end
    end
 end
 end
@@ -36,7 +36,7 @@ frame_id = bbox_info(line_id, 1);
 frame_info = bbox_info(line_id, 2:end);
 
 person_pos = object_position(frame_info, 'person');
-bus_pos = object_position(frame_info, 'person');
+bus_pos = object_position(frame_info, 'bus');
 car_pos = object_position(frame_info, 'car');
 
 fid = fopen(attribute_path, 'a');
@@ -73,11 +73,11 @@ for i = 1:obj_num
     elseif height >= 30
         height_types{1, i} = 'medium person';
     else
-        height_types{1, i} = 'short';
+        height_types{1, i} = 'short person';
 
     end
     fprintf(fid, ',');
-    fprintf(fid,'%d,%.2f,%.2f,%.2f,%.2f,%s', person_class_ID, person_pos(i,1), person_pos(i,2), person_pos(i,3), person_pos(i,4), height_types{1, 1:end-1});
+    fprintf(fid,'%d,%.2f,%.2f,%.2f,%.2f,%s', person_class_ID, person_pos(i,1), person_pos(i,2), person_pos(i,3), person_pos(i,4), height_types{1, i});
 end
 
 end
