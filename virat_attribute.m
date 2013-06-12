@@ -69,11 +69,11 @@ height_types = cell(1, obj_num);
 for i = 1:obj_num
     height = person_pos(i,4) - person_pos(i,2);
     if height >= 50
-        height_types{1, i} = 'tall person';
+        height_types{1, i} = 'tall';
     elseif height >= 30
-        height_types{1, i} = 'medium person';
+        height_types{1, i} = 'medium';
     else
-        height_types{1, i} = 'short person';
+        height_types{1, i} = 'short';
 
     end
     fprintf(fid, ',');
@@ -148,11 +148,11 @@ bHist = imhist(I(:,:,3), nBins);
 [b_vote, b] = max(bHist);
 
 if (g >= 200) && (b >= 200)
-    color_type = 'white vehicle';
+    color_type = 'white';
 elseif r >= 117
-   color_type = 'red vehicle';
+   color_type = 'red';
 else
-   color_type = 'black/deep vehicle';
+   color_type = 'black/deep';
 end
  
 end
