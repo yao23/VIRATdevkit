@@ -24,13 +24,36 @@ for i = 3:dir_num
       else
           frame_id = bbox_info(j,1);
           im = sprintf('%s/%06d.jpg', [video_path dir_list(i).name], frame_id);
-          virat_height_color(im, bbox_info, j, attribute_path);
+          virat_height_color(i-2, im, bbox_info, j, attribute_path);
       end
    end
 end
 end
 
-function virat_height_color(im, bbox_info, line_id, attribute_path)
+function virat_height_color(video_id, im, bbox_info, line_id, attribute_path)
+
+year = 2010;
+
+if video_id < 6
+    longitude = 47.285;
+    latitude = 32.507;
+    month = 3;
+    day = video_id - 1 + 16;
+elseif video_id < 42
+    longitude = 45.827;
+    latitude = 33.507;
+    month = 4;
+    day = mod((video_id - 5), 30);
+    if day == 0
+        day = 1;
+    end
+else
+    longitude = 48.276;
+    latitude = 33.505;
+    month = 5;
+    day = video_id - 41;
+end
+
 
 frame_id = bbox_info(line_id, 1);
 frame_info = bbox_info(line_id, 2:end);
@@ -41,7 +64,7 @@ car_pos = object_position(frame_info, 'car');
 
 fid = fopen(attribute_path, 'a');
 fprintf(fid, '%s', '<data ref="SENSOR_NAME">');
-fprintf(fid,'%02d/%02d/%04d,%s %.3f,%s %.3f', 3, 16, 2010, 'E', 45.827, 'N', 32.507);
+fprintf(fid,'%02d/%02d/%04d,%s %.3f,%s %.3f', month, day, year, 'E', longitude, 'N', latitude);
 fprintf(fid, '%s\n', '</data>');
 fprintf(fid, '%s', '<data ref="SENSOR_NAME">');
 fprintf(fid, '%d', frame_id);
