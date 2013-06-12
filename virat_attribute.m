@@ -1,8 +1,8 @@
 function virat_attribute
 video_path = '/home/yao/Desktop/VIRAT_video_cut3/';
 %%% VIRAT_output_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/VIRAT/';
-%%% VIRAT_output_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_test_all/VIRAT/';
-VIRAT_output_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_test/VIRAT/';
+VIRAT_output_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_test_all/VIRAT/';
+%%% VIRAT_output_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_test/VIRAT/';
 dir_list = dir(VIRAT_output_dir);
 dir_num = length(dir_list);
 
@@ -40,6 +40,9 @@ bus_pos = object_position(frame_info, 'bus');
 car_pos = object_position(frame_info, 'car');
 
 fid = fopen(attribute_path, 'a');
+fprintf(fid, '%s', '<data ref="SENSOR_NAME">');
+fprintf(fid,'%02d/%02d/%04d,%s %.3f,%s %.3f', 3, 16, 2010, 'E', 45.827, 'N', 32.507);
+fprintf(fid, '%s\n', '</data>');
 fprintf(fid, '%s', '<data ref="SENSOR_NAME">');
 fprintf(fid, '%d', frame_id);
 
