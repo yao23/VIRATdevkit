@@ -102,17 +102,17 @@ function [month, day, hour, minute, second] = time_process(month, day, hour, min
 
 if second >= 60
    second = mod(second, 60);
-   minute = minute + (second/60);
+   minute = minute + ceil(second/60);
 end
 
 if minute >= 60
    minute = mod(minute, 60);
-   hour = hour + (minute/60);
+   hour = hour + ceil(minute/60);
 end
 
 if hour >= 24
    hour = mod(hour, 24);
-   day = day + (hour/24);
+   day = day + ceil(hour/24);
 end
 
 if day == 0
@@ -127,7 +127,7 @@ end
 
 if day > mod_day
    day = mod(day, mod_day);
-   month = month + (day/mod_day);
+   month = month + ceil(day/mod_day);
 end
 
 end
