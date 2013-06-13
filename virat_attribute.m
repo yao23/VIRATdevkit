@@ -73,9 +73,6 @@ car_pos = object_position(frame_info, 'car');
 
 fid = fopen(attribute_path, 'a');
 fprintf(fid, '%s', '<data ref="SENSOR_NAME">');
-%%% fprintf(fid,'%02d/%02d/%04d,%s %.3f,%s %.3f', month, day, year, 'E', longitude, 'N', latitude);
-fprintf(fid, '%s\n', '</data>');
-fprintf(fid, '%s', '<data ref="SENSOR_NAME">');
 fprintf(fid, '%d,', frame_id);
 fprintf(fid,'%04d-%02d-%02d %02d:%02d:%02d', year, month, day, hour, minute, second);
 
