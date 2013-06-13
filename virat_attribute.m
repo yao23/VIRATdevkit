@@ -39,6 +39,9 @@ if video_id < 6
     latitude = 32.507;
     month = 3;
     day = video_id - 1 + 16;
+    hour = 13;
+    minute = 23;
+    second = 14;
 elseif video_id < 42
     longitude = 45.827;
     latitude = 33.507;
@@ -47,11 +50,17 @@ elseif video_id < 42
     if day == 0
         day = 1;
     end
+    hour = 13;
+    minute = 23;
+    second = 14;
 else
     longitude = 48.276;
     latitude = 33.505;
     month = 5;
     day = video_id - 41;
+    hour = 13;
+    minute = 23;
+    second = 14;
 end
 
 
@@ -64,21 +73,22 @@ car_pos = object_position(frame_info, 'car');
 
 fid = fopen(attribute_path, 'a');
 fprintf(fid, '%s', '<data ref="SENSOR_NAME">');
-fprintf(fid,'%02d/%02d/%04d,%s %.3f,%s %.3f', month, day, year, 'E', longitude, 'N', latitude);
+%%% fprintf(fid,'%02d/%02d/%04d,%s %.3f,%s %.3f', month, day, year, 'E', longitude, 'N', latitude);
 fprintf(fid, '%s\n', '</data>');
 fprintf(fid, '%s', '<data ref="SENSOR_NAME">');
-fprintf(fid, '%d', frame_id);
+fprintf(fid, '%d,', frame_id);
+fprintf(fid,'%04d-%02d-%02d %02d:%02d:%02d', year, month, day, hour, minute, second);
 
 if ~isempty(person_pos)
-    person_height(person_pos, fid);
+    person_height(person_pos, fid, longitude, latitude);
 end
 
 if ~isempty(bus_pos)
-    vehicle_color(bus_pos, fid, im, 'bus');
+    vehicle_color(bus_pos, fid, im, 'bus', longitude, latitude);
 end
 
 if ~isempty(car_pos)
-    vehicle_color(car_pos, fid, im, 'car');
+    vehicle_color(car_pos, fid, im, 'car', longitude, latitude);
 end
 
 fprintf(fid, '%s\n', '</data>');
@@ -86,7 +96,7 @@ fclose(fid);
 
 end
 
-function person_height(person_pos, fid)
+function person_height(person_pos, fid, longitude, latitude)
 
 person_class_ID = 1;
 obj_num = size(person_pos, 1);
@@ -103,12 +113,12 @@ for i = 1:obj_num
 
     end
     fprintf(fid, ',');
-    fprintf(fid,'%d,%.2f,%.2f,%.2f,%.2f,%s', person_class_ID, person_pos(i,1), person_pos(i,2), person_pos(i,3), person_pos(i,4), height_types{1, i});
+    fprintf(fid,'%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', person_class_ID, person_pos(i,1), person_pos(i,2), person_pos(i,3), person_pos(i,4), 'E', longitude, 'N', latitude, height_types{1, i});
 end
 
 end
 
-function vehicle_color(veh_pos, fid, im, vehicle_class)
+function vehicle_color(veh_pos, fid, im, vehicle_class, longitude, latitude)
 
 if strcmp(vehicle_class, 'bus')
    veh_class_ID = 2;
@@ -129,7 +139,7 @@ for i = 1:obj_num
     vehs_crop = img(y1:y2, x1:x2, :);
     color_types{1, i} = rgbhist(vehs_crop);
     fprintf(fid, ',');
-    fprintf(fid,'%d,%.2f,%.2f,%.2f,%.2f,%s', veh_class_ID, veh_pos(i,1), veh_pos(i,2), veh_pos(i,3), veh_pos(i,4), color_types{1, i});
+    fprintf(fid,'%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', veh_class_ID, veh_pos(i,1), veh_pos(i,2), veh_pos(i,3), veh_pos(i,4), 'E', longitude, 'N', latitude, color_types{1, i});
 end
  
 end
