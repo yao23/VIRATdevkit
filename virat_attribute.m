@@ -32,40 +32,12 @@ end
 
 function virat_height_color(video_id, im, bbox_info, line_id, attribute_path)
 
-year = 2010;
-
-if video_id < 6
-    longitude = 47.285;
-    latitude = 32.507;
-    month = 3;
-    day = video_id - 1 + 16;
-    hour = 13;
-    minute = 23;
-    second = 14;
-elseif video_id < 42
-    longitude = 45.827;
-    latitude = 33.507;
-    month = 4;
-    day = mod((video_id - 5), 30);
-    if day == 0
-        day = 1;
-    end
-    hour = 13;
-    minute = 23;
-    second = 14;
-else
-    longitude = 48.276;
-    latitude = 33.505;
-    month = 5;
-    day = video_id - 41;
-    hour = 13;
-    minute = 23;
-    second = 14;
-end
-
-
 frame_id = bbox_info(line_id, 1);
 frame_info = bbox_info(line_id, 2:end);
+
+year = 2010;
+
+[month, day, hour, minute, second, longitude, latitude] = time_space(video_id, frame_id);
 
 person_pos = object_position(frame_info, 'person');
 bus_pos = object_position(frame_info, 'bus');
@@ -90,6 +62,73 @@ end
 
 fprintf(fid, '%s\n', '</data>');
 fclose(fid);
+
+end
+
+function [month, day, hour, minute, second, longitude, latitude] = time_space(video_id, frame_id)
+
+if video_id < 6
+    longitude = 47.285;
+    latitude = 32.507;
+    month = 3;
+    day = video_id - 1 + 16;
+    hour = 13;
+    minute = 23 + video_id;
+    second = 16 + frame_id;
+    [month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
+elseif video_id < 42
+    longitude = 45.827;
+    latitude = 33.507;
+    month = 4;
+    day = video_id - 5;
+    hour = 10;
+    minute = 13 + (video_id - 5);
+    second = 15 + frame_id;
+    [month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
+else
+    longitude = 48.276;
+    latitude = 33.505;
+    month = 5;
+    day = video_id - 41;
+    hour = 15;
+    minute = 33 + (video_id - 41);
+    second = 14 + frame_id;
+    [month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
+end
+
+end
+
+function [month, day, hour, minute, second] = time_process(month, day, hour, minute, second)
+
+if second >= 60
+   second = mod(second, 60);
+   minute = minute + (second/60);
+end
+
+if minute >= 60
+   minute = mod(minute, 60);
+   hour = hour + (minute/60);
+end
+
+if hour >= 24
+   hour = mod(hour, 24);
+   day = day + (hour/24);
+end
+
+if day == 0
+   day = 1;
+end
+
+if month == 4
+    mod_day = 30;
+else 
+    mod_day = 31;
+end
+
+if day > mod_day
+   day = mod(day, mod_day);
+   month = month + (day/mod_day);
+end
 
 end
 
