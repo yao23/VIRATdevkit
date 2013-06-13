@@ -146,10 +146,10 @@ for i = 1:obj_num
         height_types{1, i} = 'medium';
     else
         height_types{1, i} = 'short';
-
     end
+    [longitude_offset, latitude_offset] = space_process(person_pos(i,1:4));
     fprintf(fid, ',');
-    fprintf(fid,'%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', person_class_ID, person_pos(i,1), person_pos(i,2), person_pos(i,3), person_pos(i,4), 'E', longitude, 'N', latitude, height_types{1, i});
+    fprintf(fid,'%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', person_class_ID, person_pos(i,1), person_pos(i,2), person_pos(i,3), person_pos(i,4), 'E', longitude+longitude_offset, 'N', latitude+latitude_offset, height_types{1, i});
 end
 
 end
@@ -174,10 +174,21 @@ for i = 1:obj_num
     y2 = int64(veh_pos(i,4));
     vehs_crop = img(y1:y2, x1:x2, :);
     color_types{1, i} = rgbhist(vehs_crop);
+    [longitude_offset, latitude_offset] = space_process(veh_pos(i,1:4));
     fprintf(fid, ',');
-    fprintf(fid,'%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', veh_class_ID, veh_pos(i,1), veh_pos(i,2), veh_pos(i,3), veh_pos(i,4), 'E', longitude, 'N', latitude, color_types{1, i});
+    fprintf(fid,'%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', veh_class_ID, veh_pos(i,1), veh_pos(i,2), veh_pos(i,3), veh_pos(i,4), 'E', longitude+longitude_offset, 'N', latitude+latitude_offset, color_types{1, i});
 end
  
+end
+
+function [longitude_offset, latitude_offset] = space_process(position)
+
+central_x = 960;
+central_y = 540;
+
+longitude_offset = (central_x - (position(1,3) + position(1,1))/2)/100;
+latitude_offset = (central_y - (position(1,4) + position(1,2))/2)/100;
+
 end
 
 function obj_pos = object_position(frame_info, object_class)
