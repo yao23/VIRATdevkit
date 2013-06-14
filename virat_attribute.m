@@ -1,7 +1,7 @@
 function virat_attribute
 video_path = '/home/yao/Desktop/VIRAT_video_cut3/';
-%%% VIRAT_output_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/VIRAT/';
-VIRAT_output_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_test_all/VIRAT/';
+VIRAT_output_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/VIRAT/';
+%%% VIRAT_output_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_test_all/VIRAT/';
 %%% VIRAT_output_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_test/VIRAT/';
 dir_list = dir(VIRAT_output_dir);
 dir_num = length(dir_list);
@@ -101,18 +101,18 @@ end
 function [month, day, hour, minute, second] = time_process(month, day, hour, minute, second)
 
 if second >= 60
-   second = mod(second, 60);
    minute = minute + ceil(second/60);
+   second = mod(second, 60);
 end
 
 if minute >= 60
-   minute = mod(minute, 60);
    hour = hour + ceil(minute/60);
+   minute = mod(minute, 60);
 end
 
 if hour >= 24
-   hour = mod(hour, 24);
    day = day + ceil(hour/24);
+   hour = mod(hour, 24);
 end
 
 if day == 0
@@ -126,8 +126,8 @@ else
 end
 
 if day > mod_day
-   day = mod(day, mod_day);
    month = month + ceil(day/mod_day);
+   day = mod(day, mod_day);
 end
 
 end
