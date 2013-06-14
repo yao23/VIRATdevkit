@@ -27,6 +27,11 @@ if ~exist(outimage_path, 'dir')
     mkdir(outimage_path);
 end
 
-video_tracks(video_path, outimage_path, [outcsv_path,'/track'], [outcsv_path,'/idmap.txt']);
+outtrack_path = [outcsv_path,'/track'];
+if ~exist(outtrack_path, 'dir')
+    mkdir(outtrack_path);
+end
+
+video_tracks(video_path, outimage_path, outtrack_path, [outcsv_path,'/idmap.txt']);
 
 cd /home/yao/Projects/object_detection/tools/VIRATdevkit/;
