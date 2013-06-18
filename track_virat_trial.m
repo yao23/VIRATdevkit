@@ -15,6 +15,19 @@ event_list = '/home/yao/Projects/object_detection/tools/VIRATdevkit/models_pas/t
 
 %%% outcsv_path = '/home/yao/Desktop/aladdin_repo/tracking_results/VIRAT_Video_Dataset/VIRAT_S_000001/csv';
 outcsv_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_test_all/VIRAT/VIRAT_S_050202_08_001410_001494/csv';
+draw = false;
+
+outtrack_path = [outcsv_path,'/track'];
+if ~exist(outtrack_path, 'dir')
+    mkdir(outtrack_path);
+end
+
+%% detection
+virat_processing(video_path, detection_num, default_path, default_list, ...
+   event_path, event_list, outcsv_path, draw)
+% aladdin_processing_fix(video_path, detection_num, default_path, default_list, ...
+%    event_path, event_list, outcsv_path, draw)
+
 
 %% tracking
 cd /home/yao/Projects/object_detection/tools/VIRATdevkit/tracking;
@@ -25,11 +38,6 @@ cd /home/yao/Projects/object_detection/tools/VIRATdevkit/visualize/code;
 outimage_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/tracking_results/VIRAT/VIRAT_S_050202_08_001410_001494/track_image';
 if ~exist(outimage_path, 'dir')
     mkdir(outimage_path);
-end
-
-outtrack_path = [outcsv_path,'/track'];
-if ~exist(outtrack_path, 'dir')
-    mkdir(outtrack_path);
 end
 
 video_tracks(video_path, outimage_path, outtrack_path, [outcsv_path,'/idmap.txt']);
