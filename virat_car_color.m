@@ -90,7 +90,7 @@ end
 function [hist_info, color] = rgbhist(I)
 
 if (size(I, 3) ~= 3)
-  error('rgbhist:numberOfSamples', 'Input image must be RGB.')
+  error('rgbhist:numberOfSamples', 'Input image must be RGB.');
 end
 
 nBins = 256;
@@ -115,7 +115,7 @@ end
 hist_info = cat(2, rHist', gHist', bHist');
 
 figure
-subplot(1,2,1);imshow(I)
+subplot(1,2,1);imshow(I);
 % text(.5,.25, color_type);
 title(color_type);
 
@@ -126,10 +126,10 @@ h(2) = stem(1:256 + 1/3, gHist);
 h(3) = stem(1:256 + 2/3, bHist);
 hold off
 
-set(h, 'marker', 'none')
-set(h(1), 'color', [1 0 0])
-set(h(2), 'color', [0 1 0])
-set(h(3), 'color', [0 0 1])
+set(h, 'marker', 'none');
+set(h(1), 'color', [1 0 0]);
+set(h(2), 'color', [0 1 0]);
+set(h(3), 'color', [0 0 1]);
 
 axis square 
 end
