@@ -63,7 +63,7 @@ fid = fopen([outcsv_path '/attribute.csv'], 'a');
 for i=1:frame_num
     
     fprintf(fid, '%s', '<data ref="SENSOR_NAME">');
-    fprintf(fid, '%d,', frame_num);
+    fprintf(fid, '%d,', i);
     
     impath = sprintf('%s/%06d.jpg', video_path, i);
 %     impath = sprintf('%s/%06d.bmp', video_path, i);
