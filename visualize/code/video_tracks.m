@@ -92,7 +92,8 @@ for i=1:frame_num
                      
                     %%% video_id = 0;
                     year = 2010;
-                                        
+                    longitude_offset = 0;
+                    latitude_offset = 0;
                     %%% [month, day, hour, minute, second, longitude, latitude] = time_space(video_id, i);
                     [month, day, hour, minute, second, longitude, latitude] = time_space();
                     
