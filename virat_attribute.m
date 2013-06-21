@@ -1,7 +1,7 @@
 function virat_attribute
 video_path = '/home/yao/Desktop/VIRAT_video_cut3/';
-VIRAT_output_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/VIRAT/';
-%%% VIRAT_output_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_test_all/VIRAT/';
+%%% VIRAT_output_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/VIRAT/';
+VIRAT_output_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_test_all/VIRAT/';
 %%% VIRAT_output_dir = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_test/VIRAT/';
 dir_list = dir(VIRAT_output_dir);
 dir_num = length(dir_list);
@@ -140,9 +140,9 @@ height_types = cell(1, obj_num);
  
 for i = 1:obj_num
     height = person_pos(i,4) - person_pos(i,2);
-    if height >= 50
+    if height >= 150
         height_types{1, i} = 'tall';
-    elseif height >= 30
+    elseif height >= 100
         height_types{1, i} = 'medium';
     else
         height_types{1, i} = 'short';
