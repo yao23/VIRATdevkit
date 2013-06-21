@@ -1,4 +1,4 @@
-function video_tracks(video_path, outimage_path, tracks_path, idmap_path, outcsv_path)
+function video_tracks(video_path, outimage_path, tracks_path, idmap_path, outcsv_path, video_id)
 % video_tracks(video_path, outimage_path, tracks_path)
 % video_path: path to your extracted video frames
 % outimage_path: path to output image directory
@@ -68,8 +68,8 @@ for i=1:frame_num
     year = 2010;
     longitude_offset = 0;
     latitude_offset = 0;
-    %%% [month, day, hour, minute, second, longitude, latitude] = time_space(video_id, i);
-    [month, day, hour, minute, second, longitude, latitude] = time_space();
+    [month, day, hour, minute, second, longitude, latitude] = time_space(video_id, i);
+    %%% [month, day, hour, minute, second, longitude, latitude] = time_space();
                     
     fprintf(fid,'%04d-%02d-%02d %02d:%02d:%02d', year, month, day, hour, minute, second);
     
@@ -98,6 +98,17 @@ for i=1:frame_num
                     x2_output = (tracks{j}.csv(i,(k-1)*4+1))+w;
                     y2_output = I_h-(tracks{j}.csv(i,(k-1)*4+2));
                      
+                    switch tracks{j}.id
+                        case 1
+                           person_height(fid, k, x1_output, y1_output,  x2_output, y2_output, longitude, latitude);
+                        case 2
+                           vehicle_color(bus_pos, fid, im, 'bus', longitude, latitude);
+                        case 3
+                           vehicle_color(car_pos, fid, im, 'car', longitude, latitude);
+                        otherwise
+                           disp('invalid object class ID');
+                    end
+                    
                     fprintf(fid, ',');
                     %%% fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', person_class_ID, i, x1/I_w, (I_h-y1-h)/I_h, (x1+w)/I_w, (I_h-y1)/I_h, 'E', longitude+longitude_offset, 'N', latitude+latitude_offset, height_types{1, i});
                     fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f', tracks{j}.id, k, x1_output, y1_output, x2_output, y2_output, 'E', longitude+longitude_offset, 'N', latitude+latitude_offset);
@@ -127,18 +138,140 @@ end
 
 fclose(fid);
 
-%%% function [month, day, hour, minute, second, longitude, latitude] = time_space(video_id, frame_num)
-function [month, day, hour, minute, second, longitude, latitude] = time_space()
-    
-longitude = 47.285;
-latitude = 32.507;
-
-month = 3;
-day = 16;
-hour = 13;
-minute = 23;
-second = 16;
-    
 end
 
+%%% function [month, day, hour, minute, second, longitude, latitude] = time_space(video_id, frame_num)
+% function [month, day, hour, minute, second, longitude, latitude] = time_space()
+%     
+% longitude = 47.285;
+% latitude = 32.507;
+% 
+% month = 3;
+% day = 16;
+% hour = 13;
+% minute = 23;
+% second = 16;
+%     
+% end
+
+function [month, day, hour, minute, second, longitude, latitude] = time_space(video_id, frame_id)
+
+if video_id < 6
+    longitude = 47.285;
+    latitude = 32.507;
+    month = 3;
+    day = video_id - 1 + 16;
+    hour = 13;
+    minute = 23 + video_id;
+    second = 16 + frame_id;
+    [month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
+elseif video_id < 42
+    longitude = 45.827;
+    latitude = 33.507;
+    month = 4;
+    day = video_id - 5;
+    hour = 10;
+    minute = 13 + (video_id - 5);
+    second = 15 + frame_id;
+    [month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
+else
+    longitude = 48.276;
+    latitude = 33.505;
+    month = 5;
+    day = video_id - 41;
+    hour = 15;
+    minute = 33 + (video_id - 41);
+    second = 14 + frame_id;
+    [month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
+end
+
+end
+
+function [month, day, hour, minute, second] = time_process(month, day, hour, minute, second)
+
+if second >= 60
+   minute = minute + ceil(second/60);
+   second = mod(second, 60);
+end
+
+if minute >= 60
+   hour = hour + ceil(minute/60);
+   minute = mod(minute, 60);
+end
+
+if hour >= 24
+   day = day + ceil(hour/24);
+   hour = mod(hour, 24);
+end
+
+if day == 0
+   day = 1;
+end
+
+if month == 4
+    mod_day = 30;
+else 
+    mod_day = 31;
+end
+
+if day > mod_day
+   month = month + ceil(day/mod_day);
+   day = mod(day, mod_day);
+end
+
+end
+
+function person_height(fid, object_id, x1, y1, x2, y2, longitude, latitude)
+
+person_class_ID = 1;
+ 
+height = y2 - y1;
+if height >= 150
+   height_types = 'tall';
+elseif height >= 100
+   height_types = 'medium';
+else
+   height_types = 'short';
+end
+[longitude_offset, latitude_offset] = space_process(x1, y1, x2, y2);
+fprintf(fid, ',');
+fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', person_class_ID, object_id, x1, y1, x2, y2, 'E', longitude+longitude_offset, 'N', latitude+latitude_offset, height_types);
+
+end
+
+function [longitude_offset, latitude_offset] = space_process(x1, y1, x2, y2)
+
+central_x = 960;
+central_y = 540;
+
+longitude_offset = (central_x - (x1 + x2)/2)/100;
+latitude_offset = (central_y - (y1 + y2)/2)/100;
+
+end
+
+function vehicle_color(veh_pos, fid, im, vehicle_class, longitude, latitude)
+
+if strcmp(vehicle_class, 'bus')
+   veh_class_ID = 2;
+else 
+   veh_class_ID = 3;
+end
+
+img = imread(im);
+ 
+obj_num = size(veh_pos, 1);
+color_types = cell(1, obj_num);
+ 
+for i = 1:obj_num
+    x1 = int64(veh_pos(i,1));
+    y1 = int64(veh_pos(i,2));
+    x2 = int64(veh_pos(i,3));
+    y2 = int64(veh_pos(i,4));
+    vehs_crop = img(y1:y2, x1:x2, :);
+    color_types{1, i} = rgbhist(vehs_crop);
+    [longitude_offset, latitude_offset] = space_process(veh_pos(i,1:4));
+    fprintf(fid, ',');
+    fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', veh_class_ID, i, veh_pos(i,1), veh_pos(i,2), veh_pos(i,3), veh_pos(i,4), 'E', longitude+longitude_offset, 'N', latitude+latitude_offset, color_types{1, i});
+end
+ 
 end
