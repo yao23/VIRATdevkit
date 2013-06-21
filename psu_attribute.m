@@ -147,9 +147,9 @@ height_types = cell(1, obj_num);
  
 for i = 1:obj_num
     height = person_pos(i,4) - person_pos(i,2);
-    if height >= 50
+    if height >= 150
         height_types{1, i} = 'tall';
-    elseif height >= 30
+    elseif height >= 100
         height_types{1, i} = 'medium';
     else
         height_types{1, i} = 'short';
