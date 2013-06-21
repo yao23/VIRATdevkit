@@ -90,16 +90,15 @@ for i=1:frame_num
                     x2_output = ((tracks{j}.csv(i,(k-1)*4+1))+w)/I_w;
                     y2_output = (I_h-(tracks{j}.csv(i,(k-1)*4+2)))/I_h;
                      
-                    %%% video_id = 0;
-                    year = 2010;
+                    video_id = 0;
+                    year = 2010
                                         
-                    %%% [month, day, hour, minute, second, longitude, latitude] = time_space(video_id, i);
-                    [month, day, hour, minute, second, longitude, latitude] = time_space();
+                    [month, day, hour, minute, second, longitude, latitude] = time_space(video_id, i);
                     
                     fprintf(fid,'%04d-%02d-%02d %02d:%02d:%02d', year, month, day, hour, minute, second);
                     %%% fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', person_class_ID, i, x1/I_w, (I_h-y1-h)/I_h, (x1+w)/I_w, (I_h-y1)/I_h, 'E', longitude+longitude_offset, 'N', latitude+latitude_offset, height_types{1, i});
                     fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f', j, k, x1_output, y1_output, x2_output, y2_output, 'E', longitude+longitude_offset, 'N', latitude+latitude_offset);
-                    
+                    fprintf(fid, '%s\n', '</data>');
                     %                 try
                     annotation('textbox', [x1/I_w, (I_h-y1-h)/I_h, w/I_w, h/I_h], ...
                         'LineWidth', 3, 'edgecolor', colororder(tracks{j}.id, :), ...
@@ -115,8 +114,6 @@ for i=1:frame_num
         end
     end
     
-    fprintf(fid, '%s\n', '</data>');
-    
     savepath = sprintf('%s/%06d.png', outimage_path, i);
     f = getframe(gcf);
     imwrite(f.cdata, savepath);
@@ -125,8 +122,7 @@ end
 
 fclose(fid);
 
-%%% function [month, day, hour, minute, second, longitude, latitude] = time_space(video_id, frame_num)
-function [month, day, hour, minute, second, longitude, latitude] = time_space()
+function [month, day, hour, minute, second, longitude, latitude] = time_space(video_id, frame_num)
     
 longitude = 47.285;
 latitude = 32.507;
