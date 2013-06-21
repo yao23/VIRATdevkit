@@ -64,6 +64,14 @@ for i=1:frame_num
     
     fprintf(fid, '%s', '<data ref="SENSOR_NAME">');
     fprintf(fid, '%d,', i);
+    %%% video_id = 0;
+    year = 2010;
+    longitude_offset = 0;
+    latitude_offset = 0;
+    %%% [month, day, hour, minute, second, longitude, latitude] = time_space(video_id, i);
+    [month, day, hour, minute, second, longitude, latitude] = time_space();
+                    
+    fprintf(fid,'%04d-%02d-%02d %02d:%02d:%02d', year, month, day, hour, minute, second);
     
     impath = sprintf('%s/%06d.jpg', video_path, i);
 %     impath = sprintf('%s/%06d.bmp', video_path, i);
@@ -90,14 +98,7 @@ for i=1:frame_num
                     x2_output = (tracks{j}.csv(i,(k-1)*4+1))+w;
                     y2_output = I_h-(tracks{j}.csv(i,(k-1)*4+2));
                      
-                    %%% video_id = 0;
-                    year = 2010;
-                    longitude_offset = 0;
-                    latitude_offset = 0;
-                    %%% [month, day, hour, minute, second, longitude, latitude] = time_space(video_id, i);
-                    [month, day, hour, minute, second, longitude, latitude] = time_space();
-                    
-                    fprintf(fid,'%04d-%02d-%02d %02d:%02d:%02d', year, month, day, hour, minute, second);
+                    fprintf(fid, ',');
                     %%% fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', person_class_ID, i, x1/I_w, (I_h-y1-h)/I_h, (x1+w)/I_w, (I_h-y1)/I_h, 'E', longitude+longitude_offset, 'N', latitude+latitude_offset, height_types{1, i});
                     fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f', j, k, x1_output, y1_output, x2_output, y2_output, 'E', longitude+longitude_offset, 'N', latitude+latitude_offset);
                     
