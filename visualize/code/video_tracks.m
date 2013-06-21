@@ -85,10 +85,10 @@ for i=1:frame_num
                     w = floor(tracks{j}.csv(i,(k-1)*4+3));
                     h = floor(tracks{j}.csv(i,(k-1)*4+4));
                     
-                    x1_output = (tracks{j}.csv(i,(k-1)*4+1))/I_w;
-                    y1_output = (I_h-(tracks{j}.csv(i,(k-1)*4+2))-h)/I_h;
-                    x2_output = ((tracks{j}.csv(i,(k-1)*4+1))+w)/I_w;
-                    y2_output = (I_h-(tracks{j}.csv(i,(k-1)*4+2)))/I_h;
+                    x1_output = tracks{j}.csv(i,(k-1)*4+1);
+                    y1_output = I_h-(tracks{j}.csv(i,(k-1)*4+2))-h;
+                    x2_output = (tracks{j}.csv(i,(k-1)*4+1))+w;
+                    y2_output = I_h-(tracks{j}.csv(i,(k-1)*4+2));
                      
                     %%% video_id = 0;
                     year = 2010;
