@@ -100,7 +100,7 @@ for i=1:frame_num
                      
                     fprintf(fid, ',');
                     %%% fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', person_class_ID, i, x1/I_w, (I_h-y1-h)/I_h, (x1+w)/I_w, (I_h-y1)/I_h, 'E', longitude+longitude_offset, 'N', latitude+latitude_offset, height_types{1, i});
-                    fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f', j, k, x1_output, y1_output, x2_output, y2_output, 'E', longitude+longitude_offset, 'N', latitude+latitude_offset);
+                    fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f', tracks{j}.id, k, x1_output, y1_output, x2_output, y2_output, 'E', longitude+longitude_offset, 'N', latitude+latitude_offset);
                     
                     %                 try
                     annotation('textbox', [x1/I_w, (I_h-y1-h)/I_h, w/I_w, h/I_h], ...
