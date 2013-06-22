@@ -91,9 +91,9 @@ for i=1:frame_num
                         case 1
                            person_height(fid, video_id, i, 1, k, x1_output, y1_output,  x2_output, y2_output);
                         case 2
-                           vehicle_color(fid, video_id, i, 2, k, x1_output, y1_output,  x2_output, y2_output, im);
+                           vehicle_color(fid, video_id, i, 2, k, x1_output, y1_output,  x2_output, y2_output, impath);
                         case 3
-                           vehicle_color(fid, video_id, i, 3, k, x1_output, y1_output,  x2_output, y2_output, im);
+                           vehicle_color(fid, video_id, i, 3, k, x1_output, y1_output,  x2_output, y2_output, impath);
                         otherwise
                            disp('invalid object class ID');
                     end
