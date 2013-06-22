@@ -63,7 +63,7 @@ fprintf(fid, '%s\n', '<tml>');
 
 for i=1:frame_num
     
-    fprintf(fid, '%s', '<data ref="SENSOR_NAME">');
+    fprintf(fid, '%s', '<data ref="CAM_UB">');
     fprintf(fid, '%d,', i);
     %%% video_id = 0;
     year = 2010;
