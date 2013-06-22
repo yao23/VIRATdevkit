@@ -237,7 +237,7 @@ else
 end
 [longitude_offset, latitude_offset] = space_process(x1, y1, x2, y2);
 fprintf(fid, ',');
-fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', person_class_ID, object_id, x1, y1, x2, y2, 'E', longitude+longitude_offset, 'N', latitude+latitude_offset, height_types);
+fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', person_class_ID, object_id, x1, y1, x2, y2, '+', longitude+longitude_offset, '+', latitude+latitude_offset, height_types);
 
 end
 
