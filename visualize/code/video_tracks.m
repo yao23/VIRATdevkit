@@ -59,6 +59,7 @@ video_dir = dir(video_path);
 frame_num = length(video_dir) - 2;
 
 fid = fopen([outcsv_path '/attribute.csv'], 'a');
+fprintf(fid, '%s\n', '<tml>');
 
 for i=1:frame_num
     
@@ -136,6 +137,7 @@ for i=1:frame_num
     close(gcf);
 end
 
+fprintf(fid, '%s\n', '</tml>');
 fclose(fid);
 
 end
