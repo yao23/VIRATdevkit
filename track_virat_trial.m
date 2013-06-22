@@ -1,6 +1,8 @@
 % Purpose : Track persons and vehicles with unique ID and output attributes in TML
 % Authors : Yao Li
-% To do : None
+% To do : 1. in video_tracks, x and y for cropping image to call function
+%         rgbhist(I). 2. global unique ID 3. fixed height/color attribute
+%         for each tracked objects
 
 %%% video_path = '/home/yao/Desktop/aladdin_repo/tracking_results/VIRAT_Video_Dataset/VIRAT_S_000001/video';
 %%% video_path = '/home/yao/Desktop/VIRAT_video_cut3/';
