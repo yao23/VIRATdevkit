@@ -62,20 +62,8 @@ fid = fopen([outcsv_path '/attribute.csv'], 'a');
 fprintf(fid, '%s\n', '<tml>');
 
 for i=1:frame_num
-    
-    fprintf(fid, '%s', '<data ref="CAM_UB">');
-    fprintf(fid, '%d,', i);
-    %%% video_id = 0;
-    year = 2010;
-    longitude_offset = 0;
-    latitude_offset = 0;
-    [month, day, hour, minute, second, longitude, latitude] = time_space(video_id, i);
-    %%% [month, day, hour, minute, second, longitude, latitude] = time_space();
-                    
-    fprintf(fid,'%04d-%02d-%02d %02d:%02d:%02d', year, month, day, hour, minute, second);
-    
+     
     impath = sprintf('%s/%06d.jpg', video_path, i);
-%     impath = sprintf('%s/%06d.bmp', video_path, i);
     im = imread(impath);
     imshow(im,'border','tight');
     
@@ -101,7 +89,7 @@ for i=1:frame_num
                      
                     switch tracks{j}.id
                         case 1
-                           person_height(fid, k, x1_output, y1_output,  x2_output, y2_output, longitude, latitude);
+                           person_height(fid, video_id, i, k, x1_output, y1_output,  x2_output, y2_output);
                         case 2
                            vehicle_color(bus_pos, fid, im, 'bus', longitude, latitude);
                         case 3
@@ -128,9 +116,7 @@ for i=1:frame_num
             end
         end
     end
-    
-    fprintf(fid, '%s\n', '</data>');
-    
+     
     savepath = sprintf('%s/%06d.png', outimage_path, i);
     f = getframe(gcf);
     imwrite(f.cdata, savepath);
@@ -156,77 +142,15 @@ end
 %     
 % end
 
-function [month, day, hour, minute, second, longitude, latitude] = time_space(video_id, frame_id)
-
-if video_id < 6
-    longitude = 47.285;
-    latitude = 32.507;
-    month = 3;
-    day = video_id - 1 + 16;
-    hour = 13;
-    minute = 23 + video_id;
-    second = 16 + frame_id;
-    [month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
-elseif video_id < 42
-    longitude = 45.827;
-    latitude = 33.507;
-    month = 4;
-    day = video_id - 5;
-    hour = 10;
-    minute = 13 + (video_id - 5);
-    second = 15 + frame_id;
-    [month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
-else
-    longitude = 48.276;
-    latitude = 33.505;
-    month = 5;
-    day = video_id - 41;
-    hour = 15;
-    minute = 33 + (video_id - 41);
-    second = 14 + frame_id;
-    [month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
-end
-
-end
-
-function [month, day, hour, minute, second] = time_process(month, day, hour, minute, second)
-
-if second >= 60
-   minute = minute + ceil(second/60);
-   second = mod(second, 60);
-end
-
-if minute >= 60
-   hour = hour + ceil(minute/60);
-   minute = mod(minute, 60);
-end
-
-if hour >= 24
-   day = day + ceil(hour/24);
-   hour = mod(hour, 24);
-end
-
-if day == 0
-   day = 1;
-end
-
-if month == 4
-    mod_day = 30;
-else 
-    mod_day = 31;
-end
-
-if day > mod_day
-   month = month + ceil(day/mod_day);
-   day = mod(day, mod_day);
-end
-
-end
-
-function person_height(fid, object_id, x1, y1, x2, y2, longitude, latitude)
+function person_height(fid, video_id, frame_id, object_id, x1, y1, x2, y2)
 
 person_class_ID = 1;
- 
+
+fprintf(fid, '%s', '<data ref="CAM_UB">');
+fprintf(fid, '%d', frame_id);
+
+[longitude, latitude] = time_space(video_id, frame_id);
+
 height = y2 - y1;
 if height >= 150
    height_types = 'tall';
@@ -235,9 +159,11 @@ elseif height >= 100
 else
    height_types = 'short';
 end
+
 [longitude_offset, latitude_offset] = space_process(x1, y1, x2, y2);
 fprintf(fid, ',');
 fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', person_class_ID, object_id, x1, y1, x2, y2, '+', longitude+longitude_offset, '+', latitude+latitude_offset, height_types);
+fprintf(fid, '%s\n', '</data>');
 
 end
 
@@ -277,3 +203,76 @@ for i = 1:obj_num
 end
  
 end
+
+function [longitude, latitude] = time_space(video_id, frame_id)
+
+year = 2010;
+                    
+if video_id < 6
+    longitude = 47.285;
+    latitude = 32.507;
+    month = 3;
+    day = video_id - 1 + 16;
+    hour = 13;
+    minute = 23 + video_id;
+    second = 16 + frame_id;
+    [month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
+elseif video_id < 42
+    longitude = 45.827;
+    latitude = 33.507;
+    month = 4;
+    day = video_id - 5;
+    hour = 10;
+    minute = 13 + (video_id - 5);
+    second = 15 + frame_id;
+    [month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
+else
+    longitude = 48.276;
+    latitude = 33.505;
+    month = 5;
+    day = video_id - 41;
+    hour = 15;
+    minute = 33 + (video_id - 41);
+    second = 14 + frame_id;
+    [month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
+end
+
+fprintf(fid, ',');
+fprintf(fid,'%04d-%02d-%02d %02d:%02d:%02d', year, month, day, hour, minute, second);
+
+end
+
+function [month, day, hour, minute, second] = time_process(month, day, hour, minute, second)
+
+if second >= 60
+   minute = minute + ceil(second/60);
+   second = mod(second, 60);
+end
+
+if minute >= 60
+   hour = hour + ceil(minute/60);
+   minute = mod(minute, 60);
+end
+
+if hour >= 24
+   day = day + ceil(hour/24);
+   hour = mod(hour, 24);
+end
+
+if day == 0
+   day = 1;
+end
+
+if month == 4
+    mod_day = 30;
+else 
+    mod_day = 31;
+end
+
+if day > mod_day
+   month = month + ceil(day/mod_day);
+   day = mod(day, mod_day);
+end
+
+end
+
