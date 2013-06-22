@@ -6,6 +6,7 @@
 %%% video_path = '/home/yao/Desktop/VIRAT_video_cut3/';
 %%% video_path = '/home/yao/Desktop/VIRAT_video_cut3/VIRAT_S_050202_08_001410_001494/';
 video_path = '/home/yao/Desktop/TSU_Experiments/X_JPG_FORMAT/Vehicle_flee_1'; 
+video_id = 5;
 
 % detection_num is used in detection step and track number will be the same
 detection_num = '3';
