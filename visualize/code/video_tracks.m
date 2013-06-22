@@ -128,20 +128,6 @@ fclose(fid);
 
 end
 
-%%% function [month, day, hour, minute, second, longitude, latitude] = time_space(video_id, frame_num)
-% function [month, day, hour, minute, second, longitude, latitude] = time_space()
-%     
-% longitude = 47.285;
-% latitude = 32.507;
-% 
-% month = 3;
-% day = 16;
-% hour = 13;
-% minute = 23;
-% second = 16;
-%     
-% end
-
 function person_height(fid, video_id, frame_id, object_id, x1, y1, x2, y2)
 
 person_class_ID = 1;
