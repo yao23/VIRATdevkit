@@ -89,11 +89,11 @@ for i=1:frame_num
                      
                     switch tracks{j}.id
                         case 1
-                           person_height(fid, video_id, i, k, x1_output, y1_output,  x2_output, y2_output);
+                           person_height(fid, video_id, i, 1, k, x1_output, y1_output,  x2_output, y2_output);
                         case 2
-                           vehicle_color(fid, video_id, i, k, x1_output, y1_output,  x2_output, y2_output, im, 'bus');
+                           vehicle_color(fid, video_id, i, 2, k, x1_output, y1_output,  x2_output, y2_output, im);
                         case 3
-                           vehicle_color(fid, video_id, i, k, x1_output, y1_output,  x2_output, y2_output, im, 'car');
+                           vehicle_color(fid, video_id, i, 3, k, x1_output, y1_output,  x2_output, y2_output, im);
                         otherwise
                            disp('invalid object class ID');
                     end
@@ -128,14 +128,12 @@ fclose(fid);
 
 end
 
-function person_height(fid, video_id, frame_id, object_id, x1, y1, x2, y2)
-
-person_class_ID = 1;
+function person_height(fid, video_id, frame_id, class_id, object_id, x1, y1, x2, y2)
 
 fprintf(fid, '%s', '<data ref="CAM_UB">');
 fprintf(fid, '%d', frame_id);
 
-[longitude, latitude] = time_space(video_id, frame_id);
+[longitude, latitude] = time_space(fid, video_id, frame_id);
 
 height = y2 - y1;
 if height >= 150
@@ -149,23 +147,17 @@ end
 [longitude_offset, latitude_offset] = space_process(x1, y1, x2, y2);
 
 fprintf(fid, ',');
-fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', person_class_ID, object_id, x1, y1, x2, y2, '+', longitude+longitude_offset, '+', latitude+latitude_offset, height_types);
+fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', class_id, object_id, x1, y1, x2, y2, '+', longitude+longitude_offset, '+', latitude+latitude_offset, height_types);
 fprintf(fid, '%s\n', '</data>');
 
 end
 
-function vehicle_color(fid, video_id, frame_id, object_id, x1, y1, x2, y2, im, vehicle_class)
+function vehicle_color(fid, video_id, frame_id, class_id, object_id, x1, y1, x2, y2, im)
 
 fprintf(fid, '%s', '<data ref="CAM_UB">');
 fprintf(fid, '%d', frame_id);
 
-[longitude, latitude] = time_space(video_id, frame_id);
-
-if strcmp(vehicle_class, 'bus')
-   veh_class_ID = 2;
-else 
-   veh_class_ID = 3;
-end
+[longitude, latitude] = time_space(fid, video_id, frame_id);
 
 img = imread(im);
  
@@ -178,7 +170,7 @@ color_types = rgbhist(vehs_crop);
 [longitude_offset, latitude_offset] = space_process(x1, y1, x2, y2);
 
 fprintf(fid, ',');
-fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', veh_class_ID, object_id, x1, y1, x2, y2, '+', longitude+longitude_offset, '+', latitude+latitude_offset, color_types);
+fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', class_id, object_id, x1, y1, x2, y2, '+', longitude+longitude_offset, '+', latitude+latitude_offset, color_types);
 fprintf(fid, '%s\n', '</data>');
 
 end
@@ -193,7 +185,7 @@ latitude_offset = (central_y - (y1 + y2)/2)/1000;
 
 end
 
-function [longitude, latitude] = time_space(video_id, frame_id)
+function [longitude, latitude] = time_space(fid, video_id, frame_id)
 
 year = 2010;
                     
