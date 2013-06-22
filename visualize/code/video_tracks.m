@@ -91,16 +91,16 @@ for i=1:frame_num
                         case 1
                            person_height(fid, video_id, i, k, x1_output, y1_output,  x2_output, y2_output);
                         case 2
-                           vehicle_color(bus_pos, fid, im, 'bus', longitude, latitude);
+                           vehicle_color(fid, video_id, i, k, x1_output, y1_output,  x2_output, y2_output, im, 'bus');
                         case 3
-                           vehicle_color(car_pos, fid, im, 'car', longitude, latitude);
+                           vehicle_color(fid, video_id, i, k, x1_output, y1_output,  x2_output, y2_output, im, 'car');
                         otherwise
                            disp('invalid object class ID');
                     end
                     
-                    fprintf(fid, ',');
+                    %%% fprintf(fid, ',');
                     %%% fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', person_class_ID, i, x1/I_w, (I_h-y1-h)/I_h, (x1+w)/I_w, (I_h-y1)/I_h, 'E', longitude+longitude_offset, 'N', latitude+latitude_offset, height_types{1, i});
-                    fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f', tracks{j}.id, k, x1_output, y1_output, x2_output, y2_output, 'E', longitude+longitude_offset, 'N', latitude+latitude_offset);
+                    %%% fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f', tracks{j}.id, k, x1_output, y1_output, x2_output, y2_output, 'E', longitude+longitude_offset, 'N', latitude+latitude_offset);
                     
                     %                 try
                     annotation('textbox', [x1/I_w, (I_h-y1-h)/I_h, w/I_w, h/I_h], ...
@@ -147,8 +147,38 @@ else
 end
 
 [longitude_offset, latitude_offset] = space_process(x1, y1, x2, y2);
+
 fprintf(fid, ',');
 fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', person_class_ID, object_id, x1, y1, x2, y2, '+', longitude+longitude_offset, '+', latitude+latitude_offset, height_types);
+fprintf(fid, '%s\n', '</data>');
+
+end
+
+function vehicle_color(fid, video_id, frame_id, object_id, x1, y1, x2, y2, im, vehicle_class)
+
+fprintf(fid, '%s', '<data ref="CAM_UB">');
+fprintf(fid, '%d', frame_id);
+
+[longitude, latitude] = time_space(video_id, frame_id);
+
+if strcmp(vehicle_class, 'bus')
+   veh_class_ID = 2;
+else 
+   veh_class_ID = 3;
+end
+
+img = imread(im);
+ 
+x1_crop = int64(x1);
+y1_crop = int64(y1);
+x2_crop = int64(x2);
+y2_crop = int64(y2);
+vehs_crop = img(y1_crop:y2_crop, x1_crop:x2_crop, :);
+color_types = rgbhist(vehs_crop);
+[longitude_offset, latitude_offset] = space_process(x1, y1, x2, y2);
+
+fprintf(fid, ',');
+fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', veh_class_ID, object_id, x1, y1, x2, y2, '+', longitude+longitude_offset, '+', latitude+latitude_offset, color_types);
 fprintf(fid, '%s\n', '</data>');
 
 end
@@ -161,33 +191,6 @@ central_y = 540;
 longitude_offset = (central_x - (x1 + x2)/2)/1000;
 latitude_offset = (central_y - (y1 + y2)/2)/1000;
 
-end
-
-function vehicle_color(veh_pos, fid, im, vehicle_class, longitude, latitude)
-
-if strcmp(vehicle_class, 'bus')
-   veh_class_ID = 2;
-else 
-   veh_class_ID = 3;
-end
-
-img = imread(im);
- 
-obj_num = size(veh_pos, 1);
-color_types = cell(1, obj_num);
- 
-for i = 1:obj_num
-    x1 = int64(veh_pos(i,1));
-    y1 = int64(veh_pos(i,2));
-    x2 = int64(veh_pos(i,3));
-    y2 = int64(veh_pos(i,4));
-    vehs_crop = img(y1:y2, x1:x2, :);
-    color_types{1, i} = rgbhist(vehs_crop);
-    [longitude_offset, latitude_offset] = space_process(veh_pos(i,1:4));
-    fprintf(fid, ',');
-    fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s', veh_class_ID, i, veh_pos(i,1), veh_pos(i,2), veh_pos(i,3), veh_pos(i,4), 'E', longitude+longitude_offset, 'N', latitude+latitude_offset, color_types{1, i});
-end
- 
 end
 
 function [longitude, latitude] = time_space(video_id, frame_id)
@@ -260,5 +263,31 @@ if day > mod_day
    day = mod(day, mod_day);
 end
 
+end
+
+function color_type = rgbhist(I)
+ 
+if (size(I, 3) ~= 3)
+   error('rgbhist:numberOfSamples', 'Input image must be RGB.')
+end
+ 
+nBins = 256;
+ 
+rHist = imhist(I(:,:,1), nBins);
+gHist = imhist(I(:,:,2), nBins);
+bHist = imhist(I(:,:,3), nBins);
+ 
+[r_vote, r] = max(rHist);
+[g_vote, g] = max(gHist);
+[b_vote, b] = max(bHist);
+
+if (g >= 200) && (b >= 200)
+    color_type = 'white';
+elseif r >= 117
+   color_type = 'red';
+else
+   color_type = 'black/deep';
+end
+ 
 end
 
