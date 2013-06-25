@@ -180,8 +180,8 @@ function [longitude_offset, latitude_offset] = space_process(x1, y1, x2, y2)
 central_x = 960;
 central_y = 540;
 
-longitude_offset = (central_x - (x1 + x2)/2)/1000;
-latitude_offset = (central_y - (y1 + y2)/2)/1000;
+longitude_offset = (central_x - (x1 + x2)/2)/10000;
+latitude_offset = (central_y - (y1 + y2)/2)/10000;
 
 end
 
