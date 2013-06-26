@@ -147,7 +147,7 @@ end
 [longitude_offset, latitude_offset] = space_process(x1, y1, x2, y2);
 
 fprintf(fid, ',');
-fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s,%s %.3f,%s %.3f', class_id, object_id, x1, y1, x2, y2, '+', longitude+longitude_offset, '+', latitude+latitude_offset, height_types, '+', longitude, '+', latitude);
+fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%.3f,%.3f,%s,%.3f,%.3f', class_id, object_id, x1, y1, x2, y2, longitude+longitude_offset, latitude+latitude_offset, height_types, longitude, latitude);
 fprintf(fid, '%s\n', '</data>');
 
 end
@@ -170,7 +170,7 @@ color_types = rgbhist(vehs_crop);
 [longitude_offset, latitude_offset] = space_process(x1, y1, x2, y2);
 
 fprintf(fid, ',');
-fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%s %.3f,%s %.3f,%s,%s %.3f,%s %.3f', class_id, object_id, x1, y1, x2, y2, '+', longitude+longitude_offset, '+', latitude+latitude_offset, color_types, '+', longitude, '+', latitude);
+fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%.3f,%.3f,%s,%.3f,%.3f', class_id, object_id, x1, y1, x2, y2, longitude+longitude_offset, latitude+latitude_offset, color_types, longitude, latitude);
 fprintf(fid, '%s\n', '</data>');
 
 end
