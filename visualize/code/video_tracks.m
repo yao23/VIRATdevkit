@@ -86,14 +86,17 @@ for i=1:frame_num
                     y1_output = I_h-(tracks{j}.csv(i,(k-1)*4+2))-h;
                     x2_output = (tracks{j}.csv(i,(k-1)*4+1))+w;
                     y2_output = I_h-(tracks{j}.csv(i,(k-1)*4+2));
-                     
+                    
                     switch tracks{j}.id
                         case 1
-                           person_height(fid, video_id, i, 1, k, x1_output, y1_output,  x2_output, y2_output);
+                           object_id = k;
+                           person_height(fid, video_id, i, 1, object_id, x1_output, y1_output,  x2_output, y2_output);
                         case 2
-                           vehicle_color(fid, video_id, i, 2, k, x1_output, y1_output,  x2_output, y2_output, impath);
+                           object_id = k+tracks{1}.num;
+                           vehicle_color(fid, video_id, i, 2, object_id, x1_output, y1_output,  x2_output, y2_output, impath);
                         case 3
-                           vehicle_color(fid, video_id, i, 3, k, x1_output, y1_output,  x2_output, y2_output, impath);
+                           object_id = k+tracks{1}.num+tracks{2}.num;
+                           vehicle_color(fid, video_id, i, 3, object_id, x1_output, y1_output,  x2_output, y2_output, impath);
                         otherwise
                            disp('invalid object class ID');
                     end
