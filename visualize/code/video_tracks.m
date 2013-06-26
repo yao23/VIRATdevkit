@@ -74,6 +74,14 @@ for i=1:frame_num
     hold on;
     
     for j=1:tracks_num
+        % establish global unique object ID
+        object_offset = 0;
+        if j > 1
+           for m = 1:(j-1)
+               object_offset = object_offset + tracks{m}.num;
+           end
+        end
+        
         if i <= tracks{j}.frame
             for k=1:tracks{j}.num
                 if sum(tracks{j}.csv(i,(k-1)*4+1:(k-1)*4+4)) > 0
@@ -86,17 +94,14 @@ for i=1:frame_num
                     y1_output = I_h-(tracks{j}.csv(i,(k-1)*4+2))-h;
                     x2_output = (tracks{j}.csv(i,(k-1)*4+1))+w;
                     y2_output = I_h-(tracks{j}.csv(i,(k-1)*4+2));
-                    
+                                     
                     switch tracks{j}.id
                         case 1
-                           object_id = k;
-                           person_height(fid, video_id, i, 1, object_id, x1_output, y1_output,  x2_output, y2_output);
+                           person_height(fid, video_id, i, 1, (k+object_offset), x1_output, y1_output,  x2_output, y2_output);
                         case 2
-                           object_id = k+tracks{1}.num;
-                           vehicle_color(fid, video_id, i, 2, object_id, x1_output, y1_output,  x2_output, y2_output, impath);
+                           vehicle_color(fid, video_id, i, 2, (k+object_offset), x1_output, y1_output,  x2_output, y2_output, impath);
                         case 3
-                           object_id = k+tracks{1}.num+tracks{2}.num;
-                           vehicle_color(fid, video_id, i, 3, object_id, x1_output, y1_output,  x2_output, y2_output, impath);
+                           vehicle_color(fid, video_id, i, 3, (k+object_offset), x1_output, y1_output,  x2_output, y2_output, impath);
                         otherwise
                            disp('invalid object class ID');
                     end
