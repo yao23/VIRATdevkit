@@ -223,7 +223,7 @@ else
 end
 
 fprintf(fid, ',');
-fprintf(fid,'%04d-%02d-%02d %02d:%02d:%02d', year, month, day, hour, minute, second);
+fprintf(fid,'%04d-%02d-%02dT%02d:%02d.%02d', year, month, day, hour, minute, second);
 
 end
 
