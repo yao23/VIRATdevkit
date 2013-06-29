@@ -24,13 +24,13 @@ for i = 3:dir_num
     outimage_path = [outimage_total_path dir_list(i).name '/track_image'];
     draw = false;
 
-    process_detect_track(video_path, outcsv_path, outimage_path, draw);
+    process_detect_track(video_path, outcsv_path, outimage_path, draw, i-2);
     
 end
 
 end
 
-function process_detect_track(video_path, outcsv_path, outimage_path, draw)
+function process_detect_track(video_path, outcsv_path, outimage_path, draw, video_id)
 
 outtrack_path = [outcsv_path,'/track'];
 if ~exist(outtrack_path, 'dir')
