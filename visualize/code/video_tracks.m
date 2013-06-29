@@ -74,7 +74,7 @@ frame_num = length(video_dir) - 2;
 object_IDs = [];
 object_attribute = struct();
 
-fid = fopen([outcsv_path '/attribute.csv'], 'a');
+fid = fopen([outcsv_path '/attribute1.csv'], 'a');
 fprintf(fid, '%s\n', '<tml>');
 
 for i=1:frame_num
