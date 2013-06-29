@@ -58,6 +58,22 @@ end
 video_dir = dir(video_path);
 frame_num = length(video_dir) - 2;
 
+% object_num = 0;
+% for i=1:frame_num
+%     for j=1:tracks_num
+%         if i <= tracks{j}.frame
+%             for k=1:tracks{j}.num
+%                 if sum(tracks{j}.csv(i,(k-1)*4+1:(k-1)*4+4)) > 0
+%                     object_num = object_num + 1;
+%                 end
+%             end
+%         end
+%     end
+% end
+
+object_IDs = [];
+object_attribute = struct();
+
 fid = fopen([outcsv_path '/attribute.csv'], 'a');
 fprintf(fid, '%s\n', '<tml>');
 
@@ -93,15 +109,15 @@ for i=1:frame_num
                     x1_output = tracks{j}.csv(i,(k-1)*4+1);
                     y1_output = I_h-(tracks{j}.csv(i,(k-1)*4+2))-h;
                     x2_output = (tracks{j}.csv(i,(k-1)*4+1))+w;
-                    y2_output = I_h-(tracks{j}.csv(i,(k-1)*4+2));
+                    y2_output = I_h-(tracks{j}.csv(i,(k-1)*4+2));               
                                      
                     switch tracks{j}.id
                         case 1
-                           person_height(fid, video_id, i, 1, (k+object_offset), x1_output, y1_output,  x2_output, y2_output);
+                           [object_IDs, object_attribute] = person_height(fid, video_id, i, 1, (k+object_offset), x1_output, y1_output,  x2_output, y2_output, object_IDs, object_attribute);
                         case 2
-                           vehicle_color(fid, video_id, i, 2, (k+object_offset), x1_output, y1_output,  x2_output, y2_output, impath);
+                           [object_IDs, object_attribute] = vehicle_color(fid, video_id, i, 2, (k+object_offset), x1_output, y1_output,  x2_output, y2_output, impath, object_IDs, object_attribute);
                         case 3
-                           vehicle_color(fid, video_id, i, 3, (k+object_offset), x1_output, y1_output,  x2_output, y2_output, impath);
+                           [object_IDs, object_attribute] = vehicle_color(fid, video_id, i, 3, (k+object_offset), x1_output, y1_output,  x2_output, y2_output, impath, object_IDs, object_attribute);
                         otherwise
                            disp('invalid object class ID');
                     end
@@ -132,21 +148,26 @@ fclose(fid);
 
 end
 
-function person_height(fid, video_id, frame_id, class_id, object_id, x1, y1, x2, y2)
+function [object_IDs, object_attribute] = person_height(fid, video_id, frame_id, class_id, object_id, x1, y1, x2, y2, object_IDs, object_attribute)
 
 fprintf(fid, '%s', '<data ref="CAM_UB">');
 fprintf(fid, '%d', frame_id);
 
 [longitude, latitude] = time_space(fid, video_id, frame_id);
 
-height = y2 - y1;
-if height >= 150
-   height_types = 'tall';
-elseif height >= 100
-   height_types = 'medium';
+if ismember(object_id, object_IDs)
+    height_types = object_attribute(object_id).attribute;
 else
-   height_types = 'short';
+    object_IDs = [object_IDs, object_id];
+    height_types = height_process(y1, y2);
+    object_attribute(object_id).id = object_id;
+    object_attribute(object_id).attribute = height_types;
 end
+
+% if object_attribute{object_id}.flag == false
+%     object_attribute{object_id}.attribute = height_types;
+%     object_attribute{object_id}.flag = true;
+% end
 
 [longitude_offset, latitude_offset] = space_process(x1, y1, x2, y2);
 
@@ -156,26 +177,47 @@ fprintf(fid, '%s\n', '</data>');
 
 end
 
-function vehicle_color(fid, video_id, frame_id, class_id, object_id, x1, y1, x2, y2, im)
+function [object_IDs, object_attribute] = vehicle_color(fid, video_id, frame_id, class_id, object_id, x1, y1, x2, y2, im, object_IDs, object_attribute)
 
 fprintf(fid, '%s', '<data ref="CAM_UB">');
 fprintf(fid, '%d', frame_id);
 
 [longitude, latitude] = time_space(fid, video_id, frame_id);
 
-img = imread(im);
- 
-x1_crop = int64(x1);
-y1_crop = int64(y1);
-x2_crop = int64(x2);
-y2_crop = int64(y2);
-vehs_crop = img(y1_crop:y2_crop, x1_crop:x2_crop, :);
-color_types = rgbhist(vehs_crop);
+if ismember(object_id, object_IDs)
+    color_types = object_attribute(object_id).attribute;
+else
+    img = imread(im);
+    x1_crop = int64(x1);
+    y1_crop = int64(y1);
+    x2_crop = int64(x2);
+    y2_crop = int64(y2);
+    vehs_crop = img(y1_crop:y2_crop, x1_crop:x2_crop, :);
+    color_types = rgbhist(vehs_crop);
+
+    object_IDs = [object_IDs, object_id];
+    object_attribute(object_id).id = object_id;
+    object_attribute(object_id).attribute = color_types;
+end
+
 [longitude_offset, latitude_offset] = space_process(x1, y1, x2, y2);
 
 fprintf(fid, ',');
 fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%.3f,%.3f,%s,%.3f,%.3f', class_id, object_id, x1, y1, x2, y2, latitude+latitude_offset, longitude+longitude_offset, color_types, latitude, longitude);
 fprintf(fid, '%s\n', '</data>');
+
+end
+
+function height_type = height_process(y1, y2)
+
+height = y2 - y1;
+if height >= 150
+   height_type = 'tall';
+elseif height >= 100
+   height_type = 'medium';
+else
+   height_type = 'short';
+end
 
 end
 
