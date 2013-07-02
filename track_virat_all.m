@@ -5,8 +5,8 @@ function track_virat_all
 % To do : adjust tracking output size from 1721 x 973 to 1920 x 1080, or
 % sth as Chenliang did to obtain better tracking results
 
-% video_total_path = '/home/yao/Desktop/VIRAT_video_cut3/';
-video_total_path = '/home/yao/Desktop/VIRAT_video_cut4/';
+video_total_path = '/home/yao/Desktop/VIRAT_video_cut3/';
+% video_total_path = '/home/yao/Desktop/VIRAT_video_cut4/';
 dir_list = dir(video_total_path);
 dir_num = length(dir_list);
 
