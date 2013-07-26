@@ -47,11 +47,13 @@ tracks_dir = dir(tracks_path);
 tracks_num = length(tracks_dir)-2;
 
 for i=1:tracks_num
-    tracks{i}.csv = csvread([tracks_path, '/', tracks_dir(i+2,1).name]);
+    csv = csvread([tracks_path, '/', tracks_dir(i+2,1).name]);
+    tracks{i}.csv = csv(:,2:end);
     tracks{i}.frame = size(tracks{i}.csv, 1);
     tracks{i}.num = size(tracks{i}.csv, 2)/4;
     tracks{i}.id = str2num(tracks_dir(i+2,1).name(1:end-4));
     tracks{i}.name = label(tracks{i}.id);
+    %tracks{i}.startfrm = 
     frame(i,1) = tracks{i}.frame;
 end
 
@@ -78,7 +80,10 @@ fid = fopen([outcsv_path '/attribute1.csv'], 'a');
 fprintf(fid, '%s\n', '<tml>');
 
 for i=1:frame_num
-     
+    if i == 1
+        continue;
+    end
+    
     impath = sprintf('%s/%06d.jpg', video_path, i);
     im = imread(impath);
     imshow(im,'border','tight');
