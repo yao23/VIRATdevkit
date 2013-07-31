@@ -49,6 +49,7 @@ tracks_num = length(tracks_dir)-2;
 for i=1:tracks_num
     csv = csvread([tracks_path, '/', tracks_dir(i+2,1).name]);
     tracks{i}.csv = csv(:,2:end);
+    % tracks{i}.csv = csv(:,2:9);
     tracks{i}.frame = size(tracks{i}.csv, 1);
     tracks{i}.num = size(tracks{i}.csv, 2)/4;
     tracks{i}.id = str2num(tracks_dir(i+2,1).name(1:end-4));
@@ -241,34 +242,42 @@ function [longitude, latitude] = time_space(fid, video_id, frame_id)
 year = 2010;
                     
 if video_id < 6
-    longitude = 47.285;
-    latitude = 32.507;
-    month = 3;
-    day = video_id - 1 + 16;
-    hour = 13;
-    minute = 23 + video_id;
-    second = 16 + frame_id;
-    [month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
+    longitude = 47.285;    latitude = 32.507;
+    month = 3;    day = video_id - 1 + 16;
+    hour = 13;    minute = 23 + video_id;    second = 16 + frame_id;
+%     [month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
 elseif video_id < 42
-    longitude = 45.827;
-    latitude = 33.507;
-    month = 4;
-    day = video_id - 5;
-    hour = 10;
-    minute = 13 + (video_id - 5);
-    second = 15 + frame_id;
-    [month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
-else
-    longitude = 48.276;
-    latitude = 33.505;
-    month = 5;
-    day = video_id - 41;
-    hour = 15;
-    minute = 33 + (video_id - 41);
-    second = 14 + frame_id;
-    [month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
+    longitude = 45.827;    latitude = 33.507;
+    month = 4;    day = video_id - 5;
+    hour = 10;    minute = 13 + (video_id - 5);    second = 15 + frame_id;
+%     [month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
+elseif video_id < 67
+    longitude = 48.276;    latitude = 33.505;
+    month = 5;    day = video_id - 41;
+    hour = 15;    minute = 33 + (video_id - 41);    second = 14 + frame_id;
+%     [month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
+elseif video_id < 76
+    switch video_id % 71 - 75, PSU dataset
+        case 71
+            longitude = 44.39491;    latitude = 33.30094;
+            month = 2; day = 8; hour = 13; minute = 00; second = 5 + frame_id;
+        case 72
+            longitude = 44.394051;    latitude = 33.317969;
+            month = 3; day = 3; hour = 14; minute = 22; second = 40 + frame_id;
+        case 73
+            longitude = 44.29661;  latitude = 33.31823;
+            month = 3; day = 4; hour = 7; minute = 10; second = frame_id;
+        case 74
+            longitude = 44.34139;   latitude = 33.29586;
+            month = 3; day = 3; hour = 10; minute = 12; second = frame_id;
+        case 75
+            longitude = 44.34139;    latitude = 33.29586;
+            month = 3; day = 3; hour = 16; minute = 32; second = frame_id;
+    end
+    
 end
 
+[month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
 fprintf(fid, ',');
 fprintf(fid,'%04d-%02d-%02dT%02d:%02d.%02d', year, month, day, hour, minute, second);
 
