@@ -175,7 +175,7 @@ end
 %     object_attribute{object_id}.flag = true;
 % end
 
-[longitude_offset, latitude_offset] = space_process(x1, y1, x2, y2);
+[longitude_offset, latitude_offset] = space_process(x1, y1, x2, y2, video_id);
 
 fprintf(fid, ',');
 fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%.3f,%.3f,%s,%.3f,%.3f', class_id, object_id, x1, y1, x2, y2, latitude+latitude_offset, longitude+longitude_offset, height_types, latitude, longitude);
@@ -206,7 +206,7 @@ else
     object_attribute(object_id).attribute = color_types;
 end
 
-[longitude_offset, latitude_offset] = space_process(x1, y1, x2, y2);
+[longitude_offset, latitude_offset] = space_process(x1, y1, x2, y2, video_id);
 
 fprintf(fid, ',');
 fprintf(fid,'%d,%d,%.2f,%.2f,%.2f,%.2f,%.3f,%.3f,%s,%.3f,%.3f', class_id, object_id, x1, y1, x2, y2, latitude+latitude_offset, longitude+longitude_offset, color_types, latitude, longitude);
@@ -227,11 +227,18 @@ end
 
 end
 
-function [longitude_offset, latitude_offset] = space_process(x1, y1, x2, y2)
+function [longitude_offset, latitude_offset] = space_process(x1, y1, x2, y2, video_id)
 
-central_x = 960;
-central_y = 540;
-
+if video_id < 67 %%% VIRAT
+    central_x = 960;
+    central_y = 540;
+elseif video_id < 76 %%% PSU
+    central_x = 320;
+    central_y = 240;
+elseif video_id < 76 %%% PSU
+    central_x = 160;
+    central_y = 120;
+end
 longitude_offset = (central_x - (x1 + x2)/2)/10000;
 latitude_offset = (central_y - (y1 + y2)/2)/10000;
 
@@ -241,23 +248,23 @@ function [longitude, latitude] = time_space(fid, video_id, frame_id)
 
 year = 2010;
                     
-if video_id < 6
+if video_id < 6 %%% 1st scene in VIRAT (1-5)
     longitude = 47.285;    latitude = 32.507;
     month = 3;    day = video_id - 1 + 16;
     hour = 13;    minute = 23 + video_id;    second = 16 + frame_id;
 %     [month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
-elseif video_id < 42
+elseif video_id < 42 %%% 2nd scene in VIRAT (6-41)
     longitude = 45.827;    latitude = 33.507;
     month = 4;    day = video_id - 5;
     hour = 10;    minute = 13 + (video_id - 5);    second = 15 + frame_id;
 %     [month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
-elseif video_id < 67
+elseif video_id < 67 %%% 3rd scene in VIRAT (42-66)
     longitude = 48.276;    latitude = 33.505;
     month = 5;    day = video_id - 41;
     hour = 15;    minute = 33 + (video_id - 41);    second = 14 + frame_id;
 %     [month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
 elseif video_id < 76
-    switch video_id % 71 - 75, PSU dataset
+    switch video_id % PSU dataset (71 - 75)
         case 71
             longitude = 44.39491;    latitude = 33.30094;
             month = 2; day = 8; hour = 13; minute = 00; second = 5 + frame_id;
@@ -274,7 +281,27 @@ elseif video_id < 76
             longitude = 44.34139;    latitude = 33.29586;
             month = 3; day = 3; hour = 16; minute = 32; second = frame_id;
     end
-    
+elseif video_id < 81 %%% simple version TSU dataset (76-80)
+    longitude = 44.396994;    latitude = 33.246653;
+    month = 1; day = 27; hour = 13; minute = 00; second = 5 + frame_id;
+else %%% complete version TSU dataset (81 - 100)
+    switch video_id % PSU dataset (71 - 75)
+        case 81
+            longitude = 44.396994;    latitude = 33.246653;
+            month = 1; day = 27; hour = 13; minute = 00; second = 5 + frame_id;
+        case 82
+            longitude = 44.394051;    latitude = 33.317969;
+            month = 3; day = 3; hour = 14; minute = 22; second = 40 + frame_id;
+        case 83
+            longitude = 44.29661;  latitude = 33.31823;
+            month = 3; day = 4; hour = 7; minute = 10; second = frame_id;
+        case 84
+            longitude = 44.34139;   latitude = 33.29586;
+            month = 3; day = 3; hour = 10; minute = 12; second = frame_id;
+        case 85
+            longitude = 44.34139;    latitude = 33.29586;
+            month = 3; day = 3; hour = 16; minute = 32; second = frame_id;
+    end
 end
 
 [month, day, hour, minute, second] = time_process(month, day, hour, minute, second);
