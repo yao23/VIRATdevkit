@@ -19,22 +19,22 @@ switch dataset
         video_id_offset = 0;
         video_total_path = '/home/yao/Desktop/VIRAT_video_cut3/';
         outcsv_total_path = [output_detect_track_path '/VIRAT/'];
-        outimage_total_path = [output_detect_track_path '/VIRAT/track_image'];
+%         outimage_total_path = [output_detect_track_path '/VIRAT/track_image'];
     case 'PSU'
         video_id_offset = 70;
         video_total_path = '/home/yao/Projects/object_detection/dataset/PSU_video_cut/';
         outcsv_total_path = [output_detect_track_path '/PSU/'];
-        outimage_total_path = [output_detect_track_path '/PSU/track_image'];
+%         outimage_total_path = [output_detect_track_path '/PSU/track_image'];
     case 'TSU_simple'
         video_id_offset = 75; % TSU complete dataset, 5 sets
         video_total_path = '/home/yao/Desktop/TSU_Experiments/X_JPG_FORMAT';
         outcsv_total_path = [output_detect_track_path '/TSU_Experiments/'];
-        outimage_total_path = [output_detect_track_path '/TSU_Experiments/track_image'];
+%         outimage_total_path = [output_detect_track_path '/TSU_Experiments/track_image'];
     case 'TSU'
         video_id_offset = 80; % TSU complete dataset, 20 sets
         video_total_path = '/home/yao/Projects/object_detection/dataset/TSU/';
         outcsv_total_path = [output_detect_track_path '/TSU/'];
-        outimage_total_path = [output_detect_track_path '/TSU/track_image'];
+%         outimage_total_path = [output_detect_track_path '/TSU/track_image'];
     otherwise
         disp('unknown dataset');
 end                       
@@ -50,7 +50,8 @@ for i = 3:dir_num
     %%% outcsv_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/TSU_Experiments/Vehicle_flee_1/csv';
     outcsv_path = [outcsv_total_path dir_list(i).name '/csv'];
     %%% outimage_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/tracking_results/VIRAT/VIRAT_S_050202_08_001410_001494/track_image';
-    outimage_path = [outimage_total_path dir_list(i).name '/track_image'];
+%     outimage_path = [outimage_total_path dir_list(i).name '/track_image'];
+    outimage_path = [outcsv_total_path dir_list(i).name '/track_image'];
     draw = false;
 
     process_detect_track(video_path, outcsv_path, outimage_path, draw, i-2+video_id_offset);
