@@ -194,8 +194,8 @@ if ismember(object_id, object_IDs)
     color_types = object_attribute(object_id).attribute;
 else
     img = imread(im);
-    x1_crop = int64(x1);
-    y1_crop = int64(y1);
+    x1_crop = max(int64(x1), 1);
+    y1_crop = max(int64(y1), 1);
     x2_crop = int64(x2);
     y2_crop = int64(y2);
     vehs_crop = img(y1_crop:y2_crop, x1_crop:x2_crop, :);
