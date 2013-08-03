@@ -235,7 +235,7 @@ if video_id < 67 %%% VIRAT
 elseif video_id < 76 %%% PSU
     central_x = 320;
     central_y = 240;
-elseif video_id < 76 %%% TSU
+else  %%% TSU (video_id >= 76)
     central_x = 160;
     central_y = 120;
 end
@@ -287,55 +287,64 @@ else %%% complete version TSU dataset (81 - 100)
     switch video_id % PSU dataset (71 - 75)
         case 81
             latitude = 33.246653;   longitude = 44.396994;    
-            month = 1; day = 27; hour = 13; minute = 0; second = 5 + frame_id;
+            month = 1; day = 27; hour = 10; minute = 0; second = frame_id;
         case 82
             latitude = 33.2466482;   longitude = 44.3969883;    
-            month = 3; day = 18; hour = 14; minute = 22; second = 40 + frame_id;
+            month = 3; day = 18; hour = 12; minute = 0; second = frame_id;
         case {83, 93}
             latitude = 33.31823;    longitude = 44.29661;  
-            month = 1; day = 26; hour = 7; minute = 10; second = frame_id;
+            month = 1; day = 26; hour = 12; minute = 0; second = frame_id;
+            if video_id == 93
+                hour = 11; minute = 11; second = 21 + frame_id;
+            end
         case 84
             latitude = 33.232587;    longitude = 44.372555;   
-            month = 3; day = 16; hour = 10; minute = 12; second = frame_id;
+            month = 3; day = 16; hour = 10; minute = 30; second = frame_id;
         case 85
             latitude = 35.452184;    longitude = 44.179044;    
-            month = 3; day = 29; hour = 16; minute = 32; second = frame_id;
+            month = 3; day = 29; hour = 11; minute = 15; second = frame_id;
         case 86
             latitude = 33.100069;   longitude = 44.583332;    
-            month = 3; day = 29; hour = 13; minute = 0; second = 5 + frame_id;
+            month = 3; day = 29; hour = 10; minute = 0; second = frame_id;
         case 87
             latitude = 33.244359;   longitude = 44.376346;    
-            month = 4; day = 3; hour = 14; minute = 22; second = 40 + frame_id;
+            month = 4; day = 3; hour = 11; minute = 45; second = frame_id;
         case {88, 92}
             latitude = 33.212756;    longitude = 44.374993;  
-            month = 3; day = 10; hour = 7; minute = 10; second = frame_id;
+            month = 3; day = 10; hour = 13; minute = 0; second = frame_id;
+            if video_id == 92
+                hour = 9;
+            end
         case 89
             latitude = 33.212756;    longitude = 44.374993;   
-            month = 3; day = 16; hour = 10; minute = 12; second = frame_id;
+            month = 3; day = 16; hour = 13; minute = 0; second = frame_id;
         case 90
             latitude = 33.212756;    longitude = 44.374993;    
-            month = 3; day = 28; hour = 16; minute = 32; second = frame_id;
+            month = 3; day = 28; hour = 9; minute = 0; second = frame_id;
         case 91
             latitude = 33.212756;   longitude = 44.374993;    
-            month = 3; day = 5; hour = 13; minute = 0; second = 5 + frame_id;
+            month = 3; day = 5; hour = 9; minute = 0; second = 5 + frame_id;
         case 94
             latitude = 33.2466482;   longitude = 44.3969883;    
-            month = 1; day = 27; hour = 14; minute = 22; second = 40 + frame_id;
+            month = 1; day = 27; hour = 11; minute = 22; second = 47 + frame_id;
         case {95, 96}
             latitude = 33.2529985;    longitude = 44.406424;  
-            month = 2; day = 10; hour = 7; minute = 10; second = frame_id;
+            month = 2; day = 10; hour = 8; minute = 33; second = 50 + frame_id;
+            if video_id == 96
+                hour = 9; minute = 8; second = 49 + frame_id;
+            end
         case 97
             latitude = 34.12456;    longitude = 45.34543;    
-            month = 3; day = 19; hour = 16; minute = 32; second = frame_id;
+            month = 3; day = 19; hour = 8; minute = 14; second = 23 + frame_id;
         case 98
             latitude = 33.2564417;   longitude = 44.3947095;    
-            month = 4; day = 6; hour = 13; minute = 0; second = 5 + frame_id;
+            month = 4; day = 6; hour = 12; minute = 16; second = 37 + frame_id;
         case 99
             latitude = 33.2590205;   longitude = 44.3982561;    
-            month = 4; day = 6; hour = 14; minute = 22; second = 40 + frame_id;
+            month = 4; day = 6; hour = 9; minute = 26; second = 48 + frame_id;
         case 100
             latitude = 33.2443546;    longitude = 44.3763406;  
-            month = 4; day = 2; hour = 7; minute = 10; second = frame_id;
+            month = 4; day = 2; hour = 15; minute = 12; second = 21 + frame_id;
     end
 end
 
