@@ -5,10 +5,8 @@ function track_virat_all
 % To do : adjust tracking output size from 1721 x 973 to 1920 x 1080, or
 % sth as Chenliang did to obtain better tracking results
 
-video_total_path = '/home/yao/Desktop/VIRAT_video_cut3/';
+
 % video_total_path = '/home/yao/Desktop/VIRAT_video_cut4/';
-dir_list = dir(video_total_path);
-dir_num = length(dir_list);
 
 output_detect_track_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas';
 % outcsv_total_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/VIRAT/';
@@ -19,24 +17,30 @@ dataset = 'TSU';
 switch dataset
     case 'VIRAT'
         video_id_offset = 0;
+        video_total_path = '/home/yao/Desktop/VIRAT_video_cut3/';
         outcsv_total_path = [output_detect_track_path '/VIRAT'];
         outimage_total_path = [output_detect_track_path '/VIRAT/track_image'];
     case 'PSU'
         video_id_offset = 70;
+        video_total_path = '/home/yao/Projects/object_detection/dataset/PSU_video_cut/';
         outcsv_total_path = [output_detect_track_path '/PSU'];
         outimage_total_path = [output_detect_track_path '/PSU/track_image'];
     case 'TSU_simple'
         video_id_offset = 75; % TSU complete dataset, 5 sets
+        video_total_path = '/home/yao/Desktop/TSU_Experiments/X_JPG_FORMAT';
         outcsv_total_path = [output_detect_track_path '/TSU_Experiments'];
         outimage_total_path = [output_detect_track_path '/TSU_Experiments/track_image'];
     case 'TSU'
         video_id_offset = 80; % TSU complete dataset, 20 sets
+        video_total_path = '/home/yao/Projects/object_detection/dataset/TSU/';
         outcsv_total_path = [output_detect_track_path '/TSU'];
         outimage_total_path = [output_detect_track_path '/TSU/track_image'];
     otherwise
         disp('unknown dataset');
 end                       
         
+dir_list = dir(video_total_path);
+dir_num = length(dir_list);
 
 for i = 3:dir_num
     %%% video_path = '/home/yao/Desktop/VIRAT_video_cut3/VIRAT_S_050202_08_001410_001494/';
