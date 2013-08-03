@@ -143,7 +143,8 @@ for i=1:frame_num
         end
     end
      
-    savepath = sprintf('%s/%06d.png', outimage_path, i);
+%     savepath = sprintf('%s/%06d.png', outimage_path, i);
+    savepath = sprintf('%s/%06d.png', outimage_path, i-1); % move backword 1
     f = getframe(gcf);
     imwrite(f.cdata, savepath);
     close(gcf);
