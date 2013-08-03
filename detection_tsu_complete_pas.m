@@ -9,7 +9,7 @@ dir_list = dir(video_total_path);
 dir_num = length(dir_list);
 
 outcsv_total_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/TSU_complete/';
-outimage_total_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/tracking_results/TSU_complete/';
+% outimage_total_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/tracking_results/TSU_complete/';
 
 for i = 3:dir_num
     %%% video_path = '/home/yao/Desktop/VIRAT_video_cut3/VIRAT_S_050202_08_001410_001494/';
@@ -19,7 +19,8 @@ for i = 3:dir_num
     %%% outcsv_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/TSU_Experiments/Vehicle_flee_1/csv';
     outcsv_path = [outcsv_total_path dir_list(i).name '/csv'];
     %%% outimage_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/tracking_results/VIRAT/VIRAT_S_050202_08_001410_001494/track_image';
-    outimage_path = [outimage_total_path dir_list(i).name '/track_image'];
+    % outimage_path = [outimage_total_path dir_list(i).name '/track_image'];
+    outimage_path = [outcsv_total_path dir_list(i).name '/det_img'];
     draw = false;
 
     process_detect_track(video_path, outcsv_path, outimage_path, draw);
