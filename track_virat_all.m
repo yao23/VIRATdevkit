@@ -10,8 +10,33 @@ video_total_path = '/home/yao/Desktop/VIRAT_video_cut3/';
 dir_list = dir(video_total_path);
 dir_num = length(dir_list);
 
-outcsv_total_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/VIRAT/';
-outimage_total_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/tracking_results/VIRAT/';
+output_detect_track_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas';
+% outcsv_total_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/VIRAT/';
+% outimage_total_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/tracking_results/VIRAT/';
+
+% dataset = 'VIRAT';
+dataset = 'TSU';
+switch dataset
+    case 'VIRAT'
+        video_id_offset = 0;
+        outcsv_total_path = [output_detect_track_path '/VIRAT'];
+        outimage_total_path = [output_detect_track_path '/VIRAT/track_image'];
+    case 'PSU'
+        video_id_offset = 70;
+        outcsv_total_path = [output_detect_track_path '/PSU'];
+        outimage_total_path = [output_detect_track_path '/PSU/track_image'];
+    case 'TSU_simple'
+        video_id_offset = 75; % TSU complete dataset, 5 sets
+        outcsv_total_path = [output_detect_track_path '/TSU_Experiments'];
+        outimage_total_path = [output_detect_track_path '/TSU_Experiments/track_image'];
+    case 'TSU'
+        video_id_offset = 80; % TSU complete dataset, 20 sets
+        outcsv_total_path = [output_detect_track_path '/TSU'];
+        outimage_total_path = [output_detect_track_path '/TSU/track_image'];
+    otherwise
+        disp('unknown dataset');
+end                       
+        
 
 for i = 3:dir_num
     %%% video_path = '/home/yao/Desktop/VIRAT_video_cut3/VIRAT_S_050202_08_001410_001494/';
@@ -24,7 +49,7 @@ for i = 3:dir_num
     outimage_path = [outimage_total_path dir_list(i).name '/track_image'];
     draw = false;
 
-    process_detect_track(video_path, outcsv_path, outimage_path, draw, i-2);
+    process_detect_track(video_path, outcsv_path, outimage_path, draw, i-2+video_id_offset);
     
 end
 
@@ -51,8 +76,8 @@ end
 
 
 %% tracking
-% cd /home/yao/Projects/object_detection/tools/VIRATdevkit/tracking;
-% final_main_tracker_slow(video_path, [outcsv_path,'/detection.csv'], [outcsv_path,'/track'], '0');
+cd /home/yao/Projects/object_detection/tools/VIRATdevkit/tracking;
+final_main_tracker_slow(video_path, [outcsv_path,'/detection.csv'], [outcsv_path,'/track'], '0');
 
 %% visualize
 cd /home/yao/Projects/object_detection/tools/VIRATdevkit/visualize/code;
