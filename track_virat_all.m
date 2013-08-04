@@ -33,7 +33,8 @@ switch dataset
     case 'TSU'
         video_id_offset = 80; % TSU complete dataset, 20 sets
         video_total_path = '/home/yao/Projects/object_detection/dataset/TSU/';
-        outcsv_total_path = [output_detect_track_path '/TSU/'];
+%         outcsv_total_path = [output_detect_track_path '/TSU/'];
+        outcsv_total_path = [output_detect_track_path '/TSU_complete/'];
 %         outimage_total_path = [output_detect_track_path '/TSU/track_image'];
     otherwise
         disp('unknown dataset');
