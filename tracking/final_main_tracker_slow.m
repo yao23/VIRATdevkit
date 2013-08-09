@@ -3,7 +3,7 @@ function [] = final_main_tracker_slow(framedir,csvfile,outcsv_path,bgswitch)
 % Authors : Suren Kumar
 % Last Update : August 9th,2012
 % To do : None
-dbstop if error;
+%dbstop if error;
 % Description of inputs
 % input_dir is the directory where %06d.ppm files are present
 % csvfile is the complete path to detection file
@@ -13,7 +13,7 @@ dbstop if error;
 
 % Adding path for optical flow
 addpath('./opticalflow');
-bgswitch = str2num(bgswitch);
+bgswitch = str2double(bgswitch);
 
 % Visualization Flag to demonstrate results overlaid and make video
 visflag = 1;
@@ -58,9 +58,11 @@ if ~isempty(objectlist)
     
     % Main Control Loop
     if bgswitch
-        datamatrix = final_object_tracker_cmodel(data,detdata,framedir,startframemat,visflag,outcsv_path,objectlist);
+        datamatrix = final_object_tracker_cmodel(data,detdata,framedir,...
+            startframemat,visflag,outcsv_path,objectlist);
     else
-        datamatrix = final_object_tracker_cmodel([],detdata,framedir,startframemat,visflag,outcsv_path,objectlist);
+        datamatrix = final_object_tracker_cmodel([],detdata,framedir,...
+            startframemat,visflag,outcsv_path,objectlist);
     end
     % Currently  hbboxdata_od is in x y w h format, for output
 end
