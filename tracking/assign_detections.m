@@ -1,6 +1,6 @@
 function [statematrix,datamatrix,currentscene,detectnum] = assign_detections(statematrix,framenum,fb,datamatrix,detdata,currentscene,detectnum)
 % Minimum ratio of intersection
-minareathresh = 0.1;
+minareathresh = 0.2;
 if framenum==61
     a = 2;
 end

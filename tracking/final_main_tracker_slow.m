@@ -21,7 +21,7 @@ visflag = 1;
 % Raw detection data read
 rawbbdata = csvread(csvfile);
 rawbbdata = sparse2dense(rawbbdata);
-% Seperating the data required for tracking particular class
+% Separating the data required for tracking particular class
 reqdata = rawbbdata(:,1:5:end);
 classids = unique(reqdata);
 % Seperating class data for each class from raw detections

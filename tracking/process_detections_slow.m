@@ -52,19 +52,19 @@ if maxdetclass>0
             % If in a frame there are more than one bouding box, we want to keep
             % non interesecting boxes only and if they are intersecting select the
             % smaller box
-            if tpcount >1
-                modifiedcurrentbox = reshape(hbboxdata_od(i,:),4,length(hbboxdata_od(i,:))/4)';
-                areamat = rectint(modifiedcurrentbox,modifiedcurrentbox);
-                areavec = hbboxdata_od(i,3:4:end).*hbboxdata_od(i,4:4:end);
-                areasum = repmat(areavec,size(areamat,1),1)+repmat(areavec',1,size(areamat,1));
-                pascalratiomat = areamat./(areasum-areamat);
-                [r,c] = find(triu(pascalratiomat,1)>areafracthresh);
-                if ~isempty(r)
-                    framedet = fusedetections(r,c,hbboxdata_od(i,:),tpcount);
-                    hbboxdata_od(i,:) = zeros(1,size(hbboxdata_od,2));
-                    hbboxdata_od(i,1:length(framedet)) = framedet;
-                end
-            end
+%             if tpcount >1
+%                 modifiedcurrentbox = reshape(hbboxdata_od(i,:),4,length(hbboxdata_od(i,:))/4)';
+%                 areamat = rectint(modifiedcurrentbox,modifiedcurrentbox);
+%                 areavec = hbboxdata_od(i,3:4:end).*hbboxdata_od(i,4:4:end);
+%                 areasum = repmat(areavec,size(areamat,1),1)+repmat(areavec',1,size(areamat,1));
+%                 pascalratiomat = areamat./(areasum-areamat);
+%                 [r,c] = find(triu(pascalratiomat,1)>areafracthresh);
+%                 if ~isempty(r)
+%                     framedet = fusedetections(r,c,hbboxdata_od(i,:),tpcount);
+%                     hbboxdata_od(i,:) = zeros(1,size(hbboxdata_od,2));
+%                     hbboxdata_od(i,1:length(framedet)) = framedet;
+%                 end
+%             end
         end
         
         % Pruning width of hbboxdata_od
