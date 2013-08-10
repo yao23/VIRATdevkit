@@ -58,7 +58,7 @@ for i=1:tracks_num
     end
     tracks{i}.id = str2num(tracks_dir(i+2,1).name(1:end-4));
     tracks{i}.name = label(tracks{i}.id);
-    %tracks{i}.startfrm = 
+    tracks{i}.startfrm = csv(1, 1);
     frame(i,1) = tracks{i}.frame;
 end
 
@@ -100,6 +100,9 @@ for i=1:frame_num
     hold on;
     
     for j=1:tracks_num
+        if i < tracks{j}.startfrm
+            continue
+        end
         % establish global unique object ID
         object_offset = 0;
         if j > 1
