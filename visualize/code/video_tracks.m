@@ -51,7 +51,11 @@ for i=1:tracks_num
     tracks{i}.csv = csv(:,2:end);
     % tracks{i}.csv = csv(:,2:9);
     tracks{i}.frame = size(tracks{i}.csv, 1);
-    tracks{i}.num = size(tracks{i}.csv, 2)/4;
+    if sum(tracks{i}.csv) == 0 %%% test this
+        tracks{i}.num = 0;
+    else
+        tracks{i}.num = size(tracks{i}.csv, 2)/4;
+    end
     tracks{i}.id = str2num(tracks_dir(i+2,1).name(1:end-4));
     tracks{i}.name = label(tracks{i}.id);
     %tracks{i}.startfrm = 
