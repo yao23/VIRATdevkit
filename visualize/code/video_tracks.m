@@ -85,9 +85,9 @@ fid = fopen([outcsv_path '/attribute1.csv'], 'a');
 fprintf(fid, '%s\n', '<tml>');
 
 for i=1:frame_num
-    if i == 1
-        continue;
-    end
+%     if i == 1
+%         continue;
+%     end
     
     impath = sprintf('%s/%06d.jpg', video_path, i);
     im = imread(impath);
@@ -151,7 +151,7 @@ for i=1:frame_num
     end
      
 %     savepath = sprintf('%s/%06d.png', outimage_path, i);
-    savepath = sprintf('%s/%06d.png', outimage_path, i-1); % move backword 1
+    savepath = sprintf('%s/%06d.png', outimage_path, i); 
     f = getframe(gcf);
     imwrite(f.cdata, savepath);
     close(gcf);
