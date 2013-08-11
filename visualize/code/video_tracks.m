@@ -51,7 +51,7 @@ for i=1:tracks_num
     tracks{i}.csv = csv(:,2:end);
     % tracks{i}.csv = csv(:,2:9);
     tracks{i}.frame = size(tracks{i}.csv, 1);
-    if sum(tracks{i}.csv) == 0 %%% test this
+    if size(tracks{i}.csv, 2) < 4 %%% test this
         tracks{i}.num = 0;
     else
         tracks{i}.num = size(tracks{i}.csv, 2)/4;
