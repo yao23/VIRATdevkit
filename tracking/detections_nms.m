@@ -36,10 +36,18 @@ if (max(max(req_mat))>minareathresh)
             nreq_ind = [nreq_ind;ind(col)];
         end
     end
+    allind = unique([row;col]);
+    for i = 1:length(allind)
+        bb_area(i) = prod(bboxes(i,3:4));
+    end
+    [val,ind]=sort(bb_area,'ascend');
+    nind = ind(1);
+    
+    
 end
 % Doing set subtraction to return non-intersecting indices
-if ~isempty(nreq_ind)
-    nind = setdiff(ind,nreq_ind);
-end
+% if ~isempty(nreq_ind)
+%     nind = setdiff(ind,nreq_ind);
+% end
 
 end
