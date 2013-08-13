@@ -67,7 +67,7 @@ end
 
 %% tracking
 cd /home/yao/Projects/object_detection/tools/VIRATdevkit/tracking;
-final_main_tracker_slow(video_path, [outcsv_path,'/detection.csv'], [outcsv_path,'/track'], '1');
+final_main_tracker_slow(video_path, [outcsv_path,'/detection.csv'], [outcsv_path,'/track'], '0');
 
 %% visualize
 cd /home/yao/Projects/object_detection/tools/VIRATdevkit/visualize/code;
