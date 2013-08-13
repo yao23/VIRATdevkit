@@ -1,4 +1,4 @@
-function [] = final_main_tracker_slow(framedir,csvfile,outcsv_path,bgswitch)
+function [] = final_main_tracker_slow(framedir, csvfile, outcsv_path, bgswitch)
 % Purpose : Do tracking using optical flow given certain detections
 % Authors : Suren Kumar
 % Last Update : August 9th,2012
@@ -52,8 +52,9 @@ if ~isempty(objectlist)
     
     % Processing for opticalflow
     if bgswitch
+        video_name = sprintf('%06d.jpg', startframe);
         % Processing for background subtraction
-        data = bgsubtract(pvidfilename,sviddir,sildir);
+        data = bgsubtract(video_name, framedir, outcsv_path);
     end
     
     % Main Control Loop
