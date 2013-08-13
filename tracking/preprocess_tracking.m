@@ -40,7 +40,7 @@ for i = 1:size(detdata,2)
         end
     else
         %statematrix{i} = zeros(endframe,length(ind));
-        detind = find(detdata{i}(startframe{i},3:4:end));
+        detind = find(detdata{i}(startframemat{i},3:4:end));
         if length(detind)>1
            % More than one detection 
             ind = detections_nms(sfdata,ind);
@@ -48,10 +48,10 @@ for i = 1:size(detdata,2)
         datamatrix{i} = zeros(endframe,length(detind)*4);
         statematrix{i} = zeros(endframe,length(detind));
         for k = 1:length(detind)
-            datamatrix{i}(startframe,(k-1)*4+1:k*4) = detdata{i}(startframe,...
+            datamatrix{i}(startframemat{i},(k-1)*4+1:k*4) = detdata{i}(startframemat{i},...
                 (detind(k)-1)*4+1:detind(k)*4);
         end
-        statematrix{i}(startframe,:) = 4*ones(1,length(detind));
+        statematrix{i}(startframemat{i},:) = 4*ones(1,length(detind));
     end
 end
 end
