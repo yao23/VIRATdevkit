@@ -1,5 +1,4 @@
-function datamatrix = final_object_tracker_cmodel(data,detdata,framedir,startframemat,...
-    visflag,outcsv_path,objectlist)
+function datamatrix = final_object_tracker_cmodel(data,detdata,framedir,startframemat,visflag,outcsv_path,objectlist)
 
 % Inputs Required :
 % data - Background subtraction .hdf5 format file
@@ -12,7 +11,7 @@ function datamatrix = final_object_tracker_cmodel(data,detdata,framedir,startfra
 % visflag - Counter to pass to visualize the results or not
 % cexplicit - tells whether to fill the between collision flag using linear
 % interpolation or to just leave them as zeros
-%dbstop if error;
+dbstop if error;
 % States in statematrix include
 % 1 - Entry
 % 2 - Exit
@@ -64,12 +63,9 @@ for framenum=startframe+fb:fb:endframe
     
     % Tracking only if there is something to track
     for class = 1:length(datamatrix)
-        if (length(find(statematrix{class}(framenum,:)>4))+...
-                length(find(statematrix{class}(framenum,:)==0)))>0
-            [datamatrix,statematrix,currentscene] = track_detections(data,...
-                datamatrix,statematrix,framenum,framedir,currentscene,im,fb);
-            % break;
-            continue;
+        if (length(find(statematrix{class}(framenum,:)>4))+length(find(statematrix{class}(framenum,:)==0)))>0
+            [datamatrix,statematrix,currentscene] = track_detections(data,datamatrix,statematrix,framenum,framedir,currentscene,im,fb);
+            break;
         end
     end
     
@@ -104,26 +100,19 @@ for framenum=startframe+fb:fb:endframe
             for i = 1:size(datamatrix{class},2)/4
                 currentbox = datamatrix{class}(framenum,1+(i-1)*4:4*i);
                 if min(currentbox(3:4)) > 0
-                    rectangle('Position',currentbox,'LineWidth',4,...
-                        'EdgeColor',colorvec(class));
-                    % Writing the frame number in text
-                    text(10,10,sprintf('Frame Number %d',framenum));
+                    rectangle('Position',currentbox,'LineWidth',4,'EdgeColor',colorvec(class));
                 end
             end
         end
         drawnow;
-        if framenum==125
-            a = 2;
-        end
         %         f = getframe(gcf);
         %         imwrite(f.cdata, imname);
         %         close(gcf);
     end
     % Writing this data to a file
     for class = 1:length(datamatrix)
-        fid = fopen([outcsv_path '/' num2str(objectlist{class}) '.csv'],'a');
+        fid = fopen([outcsv_path '/' num2str(objectlist{class}) '.csv'],'a+');
         track_class = datamatrix{class}(framenum,:);
-        fprintf(fid,'%d,',framenum);
         mystr = repmat('%4.2f,',1,length(track_class));
         fprintf(fid,mystr(1:end-1),track_class);
         fprintf(fid,'\n');

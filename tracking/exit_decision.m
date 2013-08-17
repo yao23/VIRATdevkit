@@ -9,25 +9,20 @@ for class = 1:length(datamatrix)
             exitdecision = 0;
             if (boxcor(1)<=0 || boxcor(2)<=0 || (boxcor(3)+boxcor(1))>=size(im,2) ||...
                     (boxcor(2)+boxcor(4))>=size(im,1))
-                % If the box touches the borders of image
-                % Exit decision 
-                exitdecision = 1;
-                
-                
-%                 % Finding the box when it was first detected
-%                 pfind = find(statematrix{class}(1:framenum,i)==4,1,'Last');
-%                 % Previous box
-%                 pfbox = datamatrix{class}(pfind,1+4*(i-1):4*i);
-%                 boxcor = [((boxcor(1:2)>0).*boxcor(1:2))+[1;1];...
-%                     (boxcor(3:4)+boxcor(1:2)>[size(im,2); size(im,1)]).*[size(im,2); size(im,1)]+...
-%                     (boxcor(3:4)+boxcor(1:2)<=[size(im,2); size(im,1)]).*(boxcor(3:4)+boxcor(1:2))];
-%                 testbox = [boxcor(1:2);boxcor(3:4)-boxcor(1:2)]';
-%                 % If current area is less then 50% the original area
-%                 if prod(testbox(3:4))<=0.7*prod(pfbox(3:4))
-%                     exitdecision = 1;
-%                 end
-%                 % Assign the truncated box size to the tracked results
-%                 datamatrix{class}(framenum,1+4*(i-1):4*i) = testbox;
+                % Finding the box when it was first detected
+                pfind = find(statematrix{class}(1:framenum,i)==4,1,'Last');
+                % Previous box
+                pfbox = datamatrix{class}(pfind,1+4*(i-1):4*i);
+                boxcor = [((boxcor(1:2)>0).*boxcor(1:2))+[1;1];...
+                    (boxcor(3:4)+boxcor(1:2)>[size(im,2); size(im,1)]).*[size(im,2); size(im,1)]+...
+                    (boxcor(3:4)+boxcor(1:2)<=[size(im,2); size(im,1)]).*(boxcor(3:4)+boxcor(1:2))];
+                testbox = [boxcor(1:2);boxcor(3:4)-boxcor(1:2)]';
+                % If current area is less then 50% the original area
+                if prod(testbox(3:4))<=0.7*prod(pfbox(3:4))
+                    exitdecision = 1;
+                end
+                % Assign the truncated box size to the tracked results
+                datamatrix{class}(framenum,1+4*(i-1):4*i) = testbox;
                 
                 
                 

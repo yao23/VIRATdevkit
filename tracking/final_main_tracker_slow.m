@@ -1,9 +1,9 @@
-function [] = final_main_tracker_slow(framedir, csvfile, outcsv_path, bgswitch, video_name)
+function [] = final_main_tracker_slow(framedir,csvfile,outcsv_path,bgswitch)
 % Purpose : Do tracking using optical flow given certain detections
 % Authors : Suren Kumar
 % Last Update : August 9th,2012
 % To do : None
-%dbstop if error;
+dbstop if error;
 % Description of inputs
 % input_dir is the directory where %06d.ppm files are present
 % csvfile is the complete path to detection file
@@ -13,7 +13,7 @@ function [] = final_main_tracker_slow(framedir, csvfile, outcsv_path, bgswitch, 
 
 % Adding path for optical flow
 addpath('./opticalflow');
-bgswitch = str2double(bgswitch);
+bgswitch = str2num(bgswitch);
 
 % Visualization Flag to demonstrate results overlaid and make video
 visflag = 1;
@@ -21,7 +21,7 @@ visflag = 1;
 % Raw detection data read
 rawbbdata = csvread(csvfile);
 rawbbdata = sparse2dense(rawbbdata);
-% Separating the data required for tracking particular class
+% Seperating the data required for tracking particular class
 reqdata = rawbbdata(:,1:5:end);
 classids = unique(reqdata);
 % Seperating class data for each class from raw detections
@@ -52,18 +52,15 @@ if ~isempty(objectlist)
     
     % Processing for opticalflow
     if bgswitch
-        % video_name = sprintf('%06d.jpg', startframe);
         % Processing for background subtraction
-        data = bgsubtract(video_name, framedir, outcsv_path);
+        data = bgsubtract(pvidfilename,sviddir,sildir);
     end
     
     % Main Control Loop
     if bgswitch
-        datamatrix = final_object_tracker_cmodel(data,detdata,framedir,...
-            startframemat,visflag,outcsv_path,objectlist);
+        datamatrix = final_object_tracker_cmodel(data,detdata,framedir,startframemat,visflag,outcsv_path,objectlist);
     else
-        datamatrix = final_object_tracker_cmodel([],detdata,framedir,...
-            startframemat,visflag,outcsv_path,objectlist);
+        datamatrix = final_object_tracker_cmodel([],detdata,framedir,startframemat,visflag,outcsv_path,objectlist);
     end
     % Currently  hbboxdata_od is in x y w h format, for output
 end
