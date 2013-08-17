@@ -16,8 +16,8 @@
 % video_path = '/home/yao/Desktop/TSU_Experiments/X_JPG_FORMAT/Heavy_Box_Pick_Up'; video_id = 77;
 % video_path = '/home/yao/Desktop/TSU_Experiments/X_JPG_FORMAT/Loading&Unloading_exp'; video_id = 78;
 % video_path = '/home/yao/Desktop/TSU_Experiments/X_JPG_FORMAT/Packages Pick Up'; video_id = 79;
-%%% video_path = '/home/yao/Desktop/TSU_Experiments/X_JPG_FORMAT/Vehicle_flee_1'; video_id = 80;
-video_path = '/home/yao/Projects/object_detection/dataset/PSU_video_cut/ArrestAtMarket_Take#1/left_subclip'; video_id = 71; video_name = 'ArrestAtMarket_Take#1.mp4';
+video_path = '/home/yao/Desktop/TSU_Experiments/X_JPG_FORMAT/Vehicle_flee_1'; video_id = 80;
+% video_path = '/home/yao/Projects/object_detection/dataset/PSU_video_cut/ArrestAtMarket_Take#1/left_subclip'; video_id = 71; video_name = 'ArrestAtMarket_Take#1.mp4';
 % video_path = '/home/yao/Projects/object_detection/dataset/PSU_video_cut/CheckingPrisonerInTake#3/left_subclip'; video_id = 72;
 % video_path = '/home/yao/Projects/object_detection/dataset/PSU_video_cut/JailBreakTake#3/left_subclip'; video_id = 73;
 % video_path = '/home/yao/Projects/object_detection/dataset/PSU_video_cut/WalkUpDealTake#1/Scene3.1/left_subclip'; video_id = 74;
@@ -41,8 +41,8 @@ event_list = '/home/yao/Projects/object_detection/tools/VIRATdevkit/models_pas/t
 % outcsv_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/TSU_Experiments/Heavy_Box_Pick_Up/csv';
 %outcsv_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/TSU_Experiments/Loading&Unloading_exp/csv';
 % outcsv_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/TSU_Experiments/Packages Pick Up/csv';
-%%% outcsv_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/TSU_Experiments/Vehicle_flee_1/csv';
-outcsv_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/PSU/ArrestAtMarket_Take#1/csv';
+outcsv_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/TSU_Experiments/Vehicle_flee_1/csv';
+% outcsv_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/PSU/ArrestAtMarket_Take#1/csv';
 % outcsv_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/PSU/CheckingPrisonerInTake#3/csv';
 % outcsv_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/PSU/JailBreakTake#3/csv';
 % outcsv_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/output/detection_pas/PSU/WalkUpDealTake#1_Scene3.1/csv';
@@ -67,7 +67,7 @@ end
 
 %% tracking
 cd /home/yao/Projects/object_detection/tools/VIRATdevkit/tracking;
-final_main_tracker_slow(video_path, [outcsv_path,'/detection.csv'], [outcsv_path,'/track'], '1', video_name);
+final_main_tracker_slow(video_path, [outcsv_path,'/detection.csv'], [outcsv_path,'/track'], '0', video_name);
 
 %% visualize
 cd /home/yao/Projects/object_detection/tools/VIRATdevkit/visualize/code;
@@ -79,8 +79,8 @@ cd /home/yao/Projects/object_detection/tools/VIRATdevkit/visualize/code;
 % outimage_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/tracking_results/TSU/Heavy_Box_Pick_Up/track_image'; 
 % outimage_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/tracking_results/TSU/Loading&Unloading_exp/track_image'; 
 % outimage_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/tracking_results/TSU/Packages Pick Up/track_image'; 
-%%% outimage_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/tracking_results/TSU/Vehicle_flee_1/track_image'; 
-outimage_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/tracking_results/PSU/ArrestAtMarket_Take#1/track_image';
+outimage_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/tracking_results/TSU/Vehicle_flee_1/track_image'; 
+% outimage_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/tracking_results/PSU/ArrestAtMarket_Take#1/track_image';
 % outimage_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/tracking_results/PSU/CheckingPrisonerInTake#3/track_image';
 % outimage_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/tracking_results/PSU/JailBreakTake#3/track_image';
 % outimage_path = '/home/yao/Projects/object_detection/tools/VIRATdevkit/tracking_results/PSU/WalkUpDealTake#1_Scene3.1/track_image';
