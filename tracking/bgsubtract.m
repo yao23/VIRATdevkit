@@ -4,8 +4,8 @@ dsample = 2;
 codedir = [cd '/process_video.py'];
 % Setting environment variable of matlab
 setenv('HDF5_DISABLE_VERSION_CHECK','2');
-unix(['python ' codedir ' ' [viddirectory '/' videofilename] ' '...
-    sildirectory ' ' num2str(dsample)]);
+% unix(['python ' codedir ' ' [viddirectory '/' videofilename] ' '...
+%     sildirectory ' ' num2str(dsample)]);
 % Reading Silhouette Data
 datafilename = [sildirectory '/' videofilename(1:end-4) '.hdf5'];
 fileID = H5F.open(datafilename, 'H5F_ACC_RDONLY', 'H5P_DEFAULT');
