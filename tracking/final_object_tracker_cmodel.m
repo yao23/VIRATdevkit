@@ -65,7 +65,8 @@ for framenum=startframe+fb:fb:endframe
     for class = 1:length(datamatrix)
         if (length(find(statematrix{class}(framenum,:)>4))+length(find(statematrix{class}(framenum,:)==0)))>0
             [datamatrix,statematrix,currentscene] = track_detections(data,datamatrix,statematrix,framenum,framedir,currentscene,im,fb);
-            break;
+            % break;
+            continue;
         end
     end
     
