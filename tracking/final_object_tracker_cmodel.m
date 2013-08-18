@@ -114,6 +114,7 @@ for framenum=startframe+fb:fb:endframe
     for class = 1:length(datamatrix)
         fid = fopen([outcsv_path '/' num2str(objectlist{class}) '.csv'],'a+');
         track_class = datamatrix{class}(framenum,:);
+        fprintf(fid,'%d,',framenum); 
         mystr = repmat('%4.2f,',1,length(track_class));
         fprintf(fid,mystr(1:end-1),track_class);
         fprintf(fid,'\n');
